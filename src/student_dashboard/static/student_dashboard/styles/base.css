@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.navbar-brand{
+    color: #00C898 !important;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.nav-link {
+    font-size: 1.2rem;
+}
+
+.nav-link {
+    display: inline-block;
+    position: relative;
+    padding: 6px 2px !important;
+    /* color: #0087ca; */
+}
+
+
+
+.nav-link:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 4px;
+    bottom: 0;
+    left: 0;
+    background-color: #00C898;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.landing-section {
+    height: calc(100vh - 74px);
+    position: relative;
+}
+
+.hero-text-wrapper {
+    position: absolute;
+    /* right: 0; */
+    top: 22%;
+}
+
+.hero-img-wrapper {
+    position: absolute;
+    right: 0;
+    top: 12%;
+}
+
+/* buttons */
+.green-btn {
+    background-color: #00C898 !important;
+    color: white;
+    margin-right: 16px;
+    padding: 4px 12px !important;
+    border: 2px #00C898 solid;
+    font-weight: 500 !important;
+    font-size: 1.2rem;
+    border-radius: 8px;
+}
+
+.orange-btn {
+    background-color: #ff6600 !important;
+    color: white;
+    margin-right: 16px;
+    padding: 4px 12px !important;
+    border: 2px #00C898 solid;
+    font-weight: 500 !important;
+    font-size: 1.2rem;
+    border-radius: 8px;
+}
+
+.green-btn:hover {
+    background-color: #00ad85 !important;
+    color: white;
+    border: 2px #00ad85 solid;
+}
+
+.green-outline-btn {
+    color: #00C898;
+    padding: 4px 12px !important;
+
+    border: 2px #00C898 solid;
+    font-weight: 500 !important;
+    font-size: 1.2rem;
+    border-radius: 8px;
+}
+
+.green-outline-btn:hover {
+    background-color: #00ad85 !important;
+    color: white;
+    border: 2px #00ad85 solid;
+}
+
+
+
+.btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+
+/* text */
+.big-text {
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+    line-height: 3rem;
+}
+
+.subtitle-text {
+    letter-spacing: 0.1rem;
+    color: #606a79;
+    line-height: 1.3rem;
+    padding-top: 16px;
+}
+
+.yellow-text {
+    color: #EDBC0D;
+}
+
+.green-text {
+    color: #00C898;
+}

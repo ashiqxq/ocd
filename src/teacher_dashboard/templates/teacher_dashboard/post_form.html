@@ -1,0 +1,48 @@
+{% extends 'teacher_dashboard/base.html' %} {% block content %}
+<h1>New Assignment</h1>
+
+<form action="{% url 'add_new_assignment' %}" method="POST" class="post-form">
+  {% csrf_token %}
+  <select name="course_details" class="custom-select">
+    <option selected>Select the Course</option>
+    {% for course in course_list%}
+    <option value="{{course.course_id}}">
+      ({{course.course_id}}) {{course.course_name}}
+    </option>
+    {% endfor %}
+  </select>
+  <div class="mb-2">
+    <label for="assignment_form" class="form-label"
+      >Type in the Assignment</label
+    >
+    <textarea
+      class="form-control"
+      id="assignment_form"
+      name="assignment_form"
+      rows="10"
+      required
+    >
+    </textarea>
+  </div>
+  <section class="col-sm-12">
+    <div class="form-group">
+      <div class="input-group date" id="datetimepicker1">
+        <label for="assignment_form" class="form-label"
+          >Choose a date & time</label
+        >
+        <input name="datetime" type="text" class="form-control" />
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+      </div>
+    </div>
+  </section>
+  <button type="submit" name="save" class="btn green-btn w-100 mt-3">
+    Save as draft
+  </button>
+  <button type="submit" name="publish" class="btn orange-btn w-100 mt-3">
+    Publish
+  </button>
+</form>
+
+{% endblock %}
