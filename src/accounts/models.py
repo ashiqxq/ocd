@@ -1,5 +1,6 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from datetime import datetime
 
 # Create your models here.
 class all_users(models.Model):
@@ -32,7 +33,9 @@ class course_list(models.Model):
 class student_assignments(models.Model):
     assignment_id = models.AutoField(primary_key=True)
     course_id = models.ForeignKey(course_list, on_delete=models.CASCADE)
+    assignment_name = models.TextField(blank=True, null=True)
     assignment_body = models.TextField(blank=True, null=True)
+    published_date = models.DateTimeField(default=datetime.now())
     due_date = models.DateTimeField()
     status = models.IntegerField()
     #status_dict::{'draft':0, 'posted':1, 'submitted':2, 'overdue':3, 'discarded':4}

@@ -21,6 +21,6 @@ urlpatterns = [
     path('ide/', include('compiler_app.urls'),name='compiler'),
     path('accounts/', include('accounts.urls'),name='accounts'),
     path('admin/', admin.site.urls, name='admin'),
-    path('teacher_dashboard', include('teacher_dashboard.urls'), name='teacher_dashboard'),
-    path('student_dashboard', include('student_dashboard.urls'), name='student_dashboard')
+    path('teacher_dashboard/', include('teacher_dashboard.urls'), name='teacher_dashboard'),
+    path('student_dashboard/', include('student_dashboard.urls'), name='student_dashboard')
 ]
