@@ -246,8 +246,15 @@ $(document).ready(function () {
     });
   }
 
+  function submitCode(){
+    
+  }
+
   $("#runcode").click(function () {
     runCode();
+  });
+  $("#submit_code").click(function () {
+     submitCode();
   });
 
   //When Changing the language

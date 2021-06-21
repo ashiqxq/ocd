@@ -1,14 +1,15 @@
-{% extends 'teacher_dashboard/base.html' %} {% block content %}
+{% extends 'student_dashboard/base.html' %} {% block content %}
 <div class="centerstage">
   {% for assignment in assignment_list %}
   <div class="post">
     <h1>
-      <a href="{% url 'post_detail' pk=assignment.pk %}"
-        >{{ assignment.assignment_name }}</a
-      >
+      <a href="{% url 'st_post_detail' pk=assignment.pk %}">{{ assignment.assignment_name }}</a>
     </h1>
     <div class="date">
       <p>Published on: {{ assignment.published_date|date:"H:m d M Y"}}</p>
+    </div>
+    <div class="date">
+      <p>due date: {{ assignment.due_date|date:"H:m d M Y"}}</p>
     </div>
     <h4>Course : {{assignment.course_id.course_name}}</h4>
   </div>

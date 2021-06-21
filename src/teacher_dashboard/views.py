@@ -10,21 +10,39 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from accounts.models import student_assignments
+from dateutil import parser
 from django.http import HttpResponse
+from datetime import datetime
+from django.db.models import Subquery
 # Create your views here.
+status_dict = {'draft':0, 'posted':1, 'submitted':2, 'overdue':3, 'discarded':4}
 
 
 class AboutView(TemplateView):
     template_name = 'blog/about.html'
 
+def PostDetailView(request):
+    pass
+
 
 def PostListView(request):
-    return render(request, 'teacher_dashboard/base.html')
+    # return render(request, 'teacher_dashboard/base.html')
+    username = request.user.username
+    all_assignments = student_assignments.objects.filter(status=status_dict['posted']).filter(course_id_id__in=Subquery(course_list.objects.filter(teacher_id_id=username).values('course_id'))).select_related('course_id')
+    return render(request, 'teacher_dashboard/t_assignment_list.html', {'assignment_list': all_assignments})
+
+
+def DraftListView(request):
+    # return render(request, 'teacher_dashboard/base.html')
+    print("visited")
+    username = request.user.username
+    all_drafts = student_assignments.objects.filter(status=status_dict['draft']).filter(course_id_id__in=Subquery(course_list.objects.filter(teacher_id_id=username).values('course_id'))).select_related('course_id')
+    return render(request, 'teacher_dashboard/t_draft_list.html', {'draft_list': all_drafts})
 # class PostListView(ListView):
 #     Post = None
 #     model = Post
-#
-# #  allows us to django's orms #lte means less than or equal to '-' in published_date helps in ordering by descending order
+    #
+# # allows us to django's orms #lte means less than or equal to '-' in published_date helps in ordering by descending order
 #     def get_queryset(self):
 #         return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
 
@@ -37,30 +55,27 @@ def CreatePostView(request):
     all_courses = course_list.objects.filter(teacher_id=username)
     return render(request, 'teacher_dashboard/post_form.html', {'course_list':all_courses})
 
-def new_draft(request):
-    pass
-
-
-def new_post(request):
-    # pid = request.user.username
-    # course_id = request.POST["course_details"]
-    # assignment_detail = request.POST["assignment_form"]
-    # print(assignment_detail)
-    # print(request.POST["datetime"])
-    # due_date = parse_datetime(request.POST["datetime"])
-    # print(due_date)
-    # new_assignment = student_assignments.dgs(course_id=course_id, assignment_body=assignment_detail, due_date=due_date, status=1)
-    # new_assignment.save()
-    # return redirect('home')
-
 
 def handle_new_post(request):
     if request.method == "POST":
+        pid = request.user.username
+        course_id = request.POST["course_details"]
+        assignment_detail = request.POST["assignment_form"]
+        assignment_name = request.POST["assignment_name"]
+        published_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        due_date = parser.parse(request.POST["datetime"])
         if 'save' in request.POST:
-            return new_draft(request)
+            new_assignment = student_assignments(course_id_id=course_id, assignment_body=assignment_detail,
+                                                 due_date=due_date, published_date=published_date, assignment_name = assignment_name,
+                                                 status=status_dict['draft'])
+            new_assignment.save()
+            return redirect('home')
         elif 'publish' in request.POST:
-            print(request.method, "seemewgwhh meeeee")
-            return new_post(request)
+            new_assignment = student_assignments(course_id_id=course_id, assignment_body=assignment_detail,
+                                                 due_date=due_date, published_date=published_date, assignment_name = assignment_name,
+                                                 status=status_dict['posted'])
+            new_assignment.save()
+            return redirect('home')
     return HttpResponse('hello')
 
 
@@ -84,14 +99,14 @@ def handle_new_post(request):
 #     success_url = reverse_lazy('post_list')
 
 
-class DraftListView(LoginRequiredMixin, ListView):
-    login_url = '/login/'
-    redirect_field_name = 'blog/post_list.html'
-    Post = None
-    model = Post
-
-    def get_queryset(self):
-        return Post.objects.filter(published_date__isnull=True).order_by('created_date')
+# class DraftListView(LoginRequiredMixin, ListView):
+#     login_url = '/login/'
+#     redirect_field_name = 'blog/post_list.html'
+#     Post = None
+#     model = Post
+#
+#     def get_queryset(self):
+#         return Post.objects.filter(published_date__isnull=True).order_by('created_date')
 
 
 ###################################
