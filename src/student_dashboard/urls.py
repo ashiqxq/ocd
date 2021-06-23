@@ -5,6 +5,7 @@ from django.urls import path, re_path
 urlpatterns = [
     path('', views.PostListViewStudent, name='student_dashboard'),
     re_path(r'^post/run/$', viewsc.runCode, name='run'),
+    re_path(r'^post/check/$', views.NewSubmission, name='check'),
     # path('about/', views.AboutView.as_view(), name='about'),
     path('post/<int:pk>', views.PostDetailView, name='st_post_detail'),
     # path('post/new/', views.CreatePostView, name='post_new'),

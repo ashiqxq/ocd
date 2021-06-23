@@ -11,8 +11,8 @@ import random
 def index(request):
     if request.user.is_authenticated:
         un = request.user.username
-        us = all_users.objects.filter(username=un).values('user_type')
-        if us:
+        us = all_users.objects.get(username=un)
+        if us.user_type:
             return redirect('teacher_dashboard')
         else:
             return redirect('student_dashboard')

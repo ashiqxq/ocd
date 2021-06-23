@@ -246,15 +246,87 @@ $(document).ready(function () {
     });
   }
 
-  function submitCode(){
-    
+  function submitCode() {
+    if (ongoing == true) return;
+    ongoing = true;
+    updateContent();
+    console.log("3rd hi");
+    $(".outputbox").hide();
+    $("#submit_code").prop("disabled", true);
+
+    var token = $(":input[name='csrfmiddlewaretoken']").val();
+    var input_given = $("#custom-input").val();
+    var data_pk = $("#id_passer").attr("data-pk");
+    var submit_data = {
+      source: source_code,
+      lang: selectedLang,
+      csrfmiddlewaretoken: token,
+      pk: data_pk,
+    };
+    console.log("hi", data_pk);
+    // AJAX request to Django for running code
+    $.ajax({
+      url: "check/",
+      type: "POST",
+      data: submit_data,
+      dataType: "json",
+      timeout: 1000000,
+      success: function (response) {
+        console.log("Success");
+        ongoing = false;
+        $("html, body")
+          .delay(150)
+          .animate(
+            {
+              scrollTop: $("#showres").offset().top,
+            },
+            1000
+          );
+        $(".outputbox").show();
+        $("#submit_code").prop("disabled", false);
+
+        var cstat = response.compile_status;
+        var rstat = response.run_status.status;
+      },
+
+      error: function (error) {
+        console.log("error");
+        ongoing = false;
+        $("html, body")
+          .delay(150)
+          .animate(
+            {
+              scrollTop: $("#showres").offset().top,
+            },
+            1000
+          );
+
+        $("#runcode").prop("disabled", false);
+        $(".outputbox").show();
+        $(".io-show").show();
+        $(".outputo").html("Standard output is empty").css("color", "#a6a6a6");
+        if ($("#user-input").prop("checked") == true)
+          $(".outputi").html(input_given).css("color", "#000");
+        else
+          $(".outputi").html("Standard input is empty").css("color", "#a6a6a6");
+        $(".outputio").show();
+        $(".time").children(".value").html("0.0");
+        $(".memory").children(".value").html("0");
+        $(".compilestat").children(".value").html("N/A");
+        $(".runstat").children(".value").html("N/A");
+
+        $(".errorkey").html("Server error");
+        $(".errormessage").html("Bad Request(403). Please try again!");
+      },
+    });
   }
 
   $("#runcode").click(function () {
     runCode();
   });
   $("#submit_code").click(function () {
-     submitCode();
+    console.log("hi da");
+    submitCode();
   });
 
   //When Changing the language
