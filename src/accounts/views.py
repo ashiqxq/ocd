@@ -1,4 +1,4 @@
-    from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -11,8 +11,8 @@ import random
 def index(request):
     if request.user.is_authenticated:
         un = request.user.username
-        us = all_users.objects.filter(username=un).values('user_type')
-        if us:
+        us = all_users.objects.get(username=un)
+        if us.user_type:
             return redirect('teacher_dashboard')
         else:
             return redirect('student_dashboard')

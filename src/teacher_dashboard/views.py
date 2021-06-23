@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
-from accounts.models import student_assignments
+from accounts.models import student_assignments, student_course_bridge, student_user, submission
 from dateutil import parser
 from django.http import HttpResponse
 from datetime import datetime
@@ -21,8 +21,13 @@ status_dict = {'draft':0, 'posted':1, 'submitted':2, 'overdue':3, 'discarded':4}
 class AboutView(TemplateView):
     template_name = 'blog/about.html'
 
-def PostDetailView(request):
-    pass
+
+def PostDetailView(request, pk):
+    assignment_det = student_assignments.objects.get(assignment_id=pk)
+    course_id = assignment_det.course_id_id
+    course_submissions = submission.objects.filter(assignment_id_id=pk)
+    students_list = student_user.objects.filter(username__in=Subquery(student_course_bridge.objects.filter(course_id_id=course_id).values('student_id_id')))
+    return render(request, 'teacher_dashboard/post_detail.html', {'students_list':students_list, 'assignment':assignment_det})
 
 
 def PostListView(request):
