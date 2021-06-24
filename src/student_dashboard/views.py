@@ -21,10 +21,10 @@ def NewSubmission(request):
         assignment_id = int(request.POST['pk'])
         username = request.user.username
         submission_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        is_submitted = False
+        is_submitted = 0
         try:
             is_sub = submission.objects.get(student_id_id=username, assignment_id=assignment_id)
-            is_submitted = True
+            is_submitted = 1
         except:
             pass
         if not is_submitted:
@@ -52,7 +52,8 @@ def NewSubmission(request):
                 "request_OK": "True"
             },
             "compile_status": "OK",
-            "code_id": "42bb58K"
+            "code_id": "42bb58K",
+            "submission_status": is_submitted
         }
         return JsonResponse(res, safe=False)
 

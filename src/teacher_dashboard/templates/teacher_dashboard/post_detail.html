@@ -1,45 +1,49 @@
-{% extends 'teacher_dashboard/base.html' %}
-
-{% block content %}
+{% extends 'teacher_dashboard/base.html' %} {% block content %}
 <table class="table table-hover table-borderless">
-      <tbody>
-        <tr>
-          <th scope="row">Assignment name</th>
-          <td>{{ assignment.assignment_name }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Published on</th>
-          <td>{{ assignment.published_date|date:"H:m d M Y"}}</td>
-        </tr>
-        <tr>
-          <th scope="row">Due-date</th>
-          <td>{{ assignment.due_date|date:"H:m d M Y"}}</td>
-        </tr>
-        <tr>
-          <th scope="row">course id</th>
-          <td>{{assignment.course_id.course_name}}</td>
-        </tr>
-        <tr>
-          <th scope="row">Question</th>
-          <td>{{ assignment.assignment_body}}</td>
-        </tr>
-      </tbody>
-    </table>
+  <tbody>
+    <tr>
+      <th scope="row">Assignment name</th>
+      <td>{{ assignment.assignment_name }}</td>
+    </tr>
+    <tr>
+      <th scope="row">Published on</th>
+      <td>{{ assignment.published_date|date:"H:m d M Y"}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Due-date</th>
+      <td>{{ assignment.due_date|date:"H:m d M Y"}}</td>
+    </tr>
+    <tr>
+      <th scope="row">course id</th>
+      <td>{{assignment.course_id.course_name}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Question</th>
+      <td>{{ assignment.assignment_body}}</td>
+    </tr>
+  </tbody>
+</table>
 <table class="table table-hover table-borderless">
-      <tbody>
-        <tr>
-            <th scope="row">Student_id</th>
-            <th scope="row">Student_name</th>
-            <th scope="row">Assignment_status</th>
-        </tr>
-        {% for student in students_list %}
-        <tr>
-            <td>{{ student.username }}</td>
-            <td>  {{student.first_name}} {{student.last_name}}</td>
-            <td> feature not implemented </td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+  <tbody>
+    <tr>
+      <th scope="row">Student_id</th>
+      <th scope="row">Student_name</th>
+      <th scope="row">Assignment_status</th>
+    </tr>
+    {% for student in students_list %}
+    <tr>
+      <td>{{ student.2 }}</td>
+      <td>{{student.0}} {{student.1}}</td>
+      {% if not student.3 %}
+      <td>Not submitted</td>
+      {% else %}
+      <td>
+        <a href="{% url 'submission_detail' pk=student.4 %}"> Submitted </a>
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

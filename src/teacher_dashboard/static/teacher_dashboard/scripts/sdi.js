@@ -47,7 +47,8 @@ $(document).ready(function () {
   editor.getSession().setTabSize(5);
   var source_code = editor.getValue();
   editor.setFontSize(14);
-  editor.setValue(language[selectedLang], -1);
+  var data_code = $("#sub_passer").attr("data-code");
+  editor.setValue(data_code, -1);
   var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
   var statusBar = new StatusBar(
     editor,

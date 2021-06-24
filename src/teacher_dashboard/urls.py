@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.PostListView, name='teacher_dashboard'),
     # path('about/', views.AboutView.as_view(), name='about'),
     path('post/<int:pk>', views.PostDetailView, name='post_detail'),
+    path('submission/<int:pk>', views.SubmissionDetailView, name='submission_detail'),
     path('post/new/', views.CreatePostView, name='post_new'),
     path('drafts/', views.DraftListView, name='post_draft_list'),
     # path('post/<int:pk>/edit/', views.PostUpdateView.as_view(), name='post_edit'),
