@@ -36,11 +36,24 @@
       type="text/javascript"
       charset="utf-8"
     ></script>
-    <!-- <link rel="stylesheet" href="{% static 'compiler_app/styles/base.css' %}" /> -->
     <link
+      rel="stylesheet"
+      href="{% static 'teacher_dashboard/styles/base.css' %}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <!-- <link
       rel="stylesheet"
       type="text/css"
       href="{% static 'css/bootstrap.min.css' %}"
+    /> -->
+    <link
+      rel="stylesheet"
+      href="{% static 'teacher_dashboard/styles/glyphicon.css' %}"
     />
     <link
       rel="stylesheet"
@@ -51,7 +64,35 @@
 
   <body>
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
-    <nav class="navbar navbar-default">
+    <header class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <a class="navbar-brand" href="{% url 'home' %}">Aulas | CoderGo</a>
+        <ul class="navbar-nav d-flex justify-content-end w-100 mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item ms-5">
+            <a class="nav-link">Hello {{user.first_name}}</a>
+          </li>
+          <li class="nav-item ms-5">
+            <a class="nav-link" href="{% url 'ide' %}">Open IDE</a>
+          </li>
+          <li class="nav-item ms-5">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item ms-5">
+            <a class="nav-link" aria-current="page" href="#">About Us</a>
+          </li>
+          <li class="nav-item ms-5">
+            <a class="nav-link" aria-current="page" href="#">Help</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <!-- <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
           <a style="color: #fff" class="navbar-brand" href="#">AULAS</a>
@@ -60,8 +101,54 @@
           <li><a href="#">IDE</a></li>
         </ul>
       </div>
-    </nav>
-    <div class="row justify-content-center">
+    </nav> -->
+    <br />
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <h8 id="id_passer" data-pk="{{assignment.pk}}">
+            <b> Assignment name: </b> {{ assignment.assignment_name }}
+          </h8>
+        </div>
+        <div class="col-lg-4">
+          <h8> <b> Submitted by: </b> {{ submission.student_id_id }} </h8>
+        </div>
+        <div class="col-lg-4">
+          <h8>
+            <b> Published on: </b> {{ assignment.published_date|date:"H:m d M
+            Y"}}
+          </h8>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-lg-4">
+          <h8> <b> Course id: </b> {{assignment.course_id.course_name}} </h8>
+        </div>
+        <div class="col-lg-4">
+          <h8>
+            <b> Due date: </b> {{ assignment.due_date|date:"H:m d M Y" }}
+          </h8>
+        </div>
+        <div class="col-lg-4">
+          <h8>
+            <b> Submission date: </b> {{ submission.submission_date|date:"H:m d
+            M Y" }}
+          </h8>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-lg-10">
+          <h8 id="sub_passer" data-code="{{submission.submission_code}}">
+            <b> Question: </b> {{assignment.assignment_body}}
+          </h8>
+        </div>
+      </div>
+    </div>
+    <br />
+    <br />
+    <!-- <div class="row justify-content-center">
     <div class="col-auto">
     <table class="table table-hover table-borderless">
       <tbody>
@@ -95,10 +182,7 @@
       </tbody>
     </table>
     </div>
-    </div>
-    <h7 style="margin-left: 16%">The submitted assignment</h7>
-    <hr />
-    <br /><br />
+    </div> -->
 
     <div class="container">
       <div id="topbar">
@@ -160,7 +244,7 @@
             </div>
           </div>
 
-          <div style="margin-left: 65.4%" class="run-save-panel">
+          <div style="margin-left: 85.4%" class="run-save-panel">
             <button
               class="btn btn-success"
               id="runcode"

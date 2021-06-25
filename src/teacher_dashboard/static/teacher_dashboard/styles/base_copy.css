@@ -6,17 +6,17 @@ body {
 
 .navbar-brand {
   color: #00c898 !important;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2rem !important;
+  font-weight: bold !important;
 }
 
 .nav-link {
-  font-size: 1.2rem;
+  font-size: 1.2rem !important;
 }
 
 .nav-link {
-  display: inline-block;
-  position: relative;
+  display: inline-block !important;
+  position: relative !important;
   padding: 6px 2px !important;
   /* color: #0087ca; */
 }

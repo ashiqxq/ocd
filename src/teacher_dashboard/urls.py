@@ -1,4 +1,5 @@
 from teacher_dashboard import views
+from compiler_app.views import runCode
 from django.urls import path
 
 urlpatterns = [
@@ -6,6 +7,7 @@ urlpatterns = [
     # path('about/', views.AboutView.as_view(), name='about'),
     path('post/<int:pk>', views.PostDetailView, name='post_detail'),
     path('submission/<int:pk>', views.SubmissionDetailView, name='submission_detail'),
+    path('submission/run/', runCode, name='t_run'),
     path('post/new/', views.CreatePostView, name='post_new'),
     path('drafts/', views.DraftListView, name='post_draft_list'),
     # path('post/<int:pk>/edit/', views.PostUpdateView.as_view(), name='post_edit'),

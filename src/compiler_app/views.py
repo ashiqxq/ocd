@@ -39,7 +39,7 @@ def runCode(request):
 			# finally read output from file and save in output variable
 		    with open('outputs.txt', 'r') as f:
 		    	output = f.read()
-		    otp_html = "<pre>"+output+"</pre"
+		    otp_html = "<pre>"+output+"</pre>"
 		    flag = 1
 	    except Exception as e:
 			# to return error in the code

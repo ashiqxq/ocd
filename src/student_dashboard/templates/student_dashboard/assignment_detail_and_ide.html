@@ -36,11 +36,16 @@
       type="text/javascript"
       charset="utf-8"
     ></script>
-    <!-- <link rel="stylesheet" href="{% static 'compiler_app/styles/base.css' %}" /> -->
-    <link
+    <link rel="stylesheet" href="{% static 'student_dashboard/styles/base.css' %}" />
+        <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/bootstrap.min.css' %}"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+        <link
+      rel="stylesheet"
+      href="{% static 'student_dashboard/styles/glyphicon.css' %}"
     />
     <link
       rel="stylesheet"
@@ -49,9 +54,9 @@
     />
   </head>
 
-  <body>
+  <br>
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
-    <nav class="navbar navbar-default">
+    <!-- <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
           <a style="color: #fff" class="navbar-brand" href="#">AULAS</a>
@@ -60,59 +65,98 @@
           <li><a href="#">IDE</a></li>
         </ul>
       </div>
-    </nav>
-    <table class="table table-hover table-borderless">
-      <tbody>
-
-          <th scope="row">Assignment name</th>
-          <td id="id_passer" data-pk="{{assignment.pk}}">{{ assignment.assignment_name }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Published on</th>
-          <td>{{ assignment.published_date|date:"H:m d M Y"}}</td>
-        </tr>
-        <tr>
-          <th scope="row">Due-date</th>
-          <td>{{ assignment.due_date|date:"H:m d M Y"}}</td>
-        </tr>
-        <tr>
-          <th scope="row">course id</th>
-          <td>{{assignment.course_id.course_name}}</td>
-        </tr>
-        <tr>
-          <th scope="row">Question</th>
-          <td>{{ assignment.assignment_body}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <h7 style="margin-left: 16%">Type your code in here</h7>
-    <hr />
-    <br /><br />
+    </nav> -->
+    <header class="container">
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <a class="navbar-brand" href="{% url 'home' %}">Aulas | CoderGo</a>
+        <ul class="navbar-nav d-flex justify-content-end w-100 mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item ms-5">
+            <a class="nav-link">Hello {{user.first_name}}</a>
+          </li>
+          <li class="nav-item ms-5">
+            <a class="nav-link">Profile</a>
+          </li>
+          <li class="nav-item ms-5">
+            <a class="nav-link" href="{% url 'ide' %}">IDE</a>
+          </li>
+          <li class="nav-item ms-5">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item ms-5">
+            <a class="nav-link" aria-current="page" href="#">About Us</a>
+          </li>
+          <li class="nav-item ms-5">
+            <a class="nav-link" aria-current="page" href="#">Help</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <br />
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <h8 id="id_passer" data-pk="{{assignment.pk}}">
+            <b> Assignment name: </b> {{ assignment.assignment_name }}
+          </h8>
+        </div>
+        <div class="col-lg-4">
+          <h8>
+            <b> Published on: </b> {{ assignment.published_date|date:"H:m d M Y"}}
+          </h8>
+        </div>
+        <div class="col-lg-4">
+          <h8> <b> Course id: </b> {{assignment.course_id.course_name}} </h8>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-lg-8">
+          <h8>
+            <b> Question: </b> {{assignment.assignment_body}}
+          </h8>
+        </div>
+        <div class="col-lg-4">
+          <h8>
+            <b> Due date: </b> {{ assignment.due_date|date:"H:m d M Y" }}
+          </h8>
+        </div>
+      </div>
+      <br />
+      <br />
+    </div>
+    <br />
+    <br />
 
     <div class="container">
       <div id="topbar">
         <div class="lang-choose">
-          <select class="form-control" name="lang" id="lang">
-            <option value="C">C (gcc 4.8.4)</option>
-            <option value="CPP">C++ (g++ 4.8.4)</option>
-            <option value="CLOJURE">Clojure (clojure 1.1.0)</option>
-            <option value="CSS">CSS</option>
-            <option value="CSHARP">C# (mono 3.2.8)</option>
-            <option value="GO">Go (go 1.4.2)</option>
-            <option value="HASKELL">Haskell (ghc 7.4.1)</option>
-            <option value="JAVA">Java (openjdk 1.7.0_09)</option>
-            <option value="JAVASCRIPT">JavaScript (Rhino 1.7)</option>
-            <option value="LISP">Lisp (csc 4.8.0.5)</option>
-            <option value="OBJECTIVEC">Objective-C (clang 3.3)</option>
-            <option value="PASCAL">Pascal (fpc 2.6.2)</option>
-            <option value="PERL">Perl (perl 5.18.2)</option>
-            <option value="PHP">PHP (php 5.5.9)</option>
-            <option value="PYTHON" selected>Python (python 2.7.6)</option>
-            <option value="RUBY">Ruby (ruby 2.1.1)</option>
-            <option value="R">R (RScript 3.0.2)</option>
-            <option value="RUST">Rust (rustc 1.4.0)</option>
-            <option value="SCALA">Scala (scalac 2.9.2)</option>
-            <option value="TEXTFILE">Text</option>
+          <select class="form-control" name="lang" id="lang" data-show-icon="true">
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="CPP">C++ (g++ 4.8.4)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="C">C (gcc 4.8.4)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="CLOJURE">Clojure (clojure 1.1.0)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="CSS">CSS</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="CSHARP">C# (mono 3.2.8)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="GO">Go (go 1.4.2)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="HASKELL">Haskell (ghc 7.4.1)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="JAVA">Java (openjdk 1.7.0_09)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="JAVASCRIPT">JavaScript (Rhino 1.7)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="LISP">Lisp (csc 4.8.0.5)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="OBJECTIVEC">Objective-C (clang 3.3)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="PASCAL">Pascal (fpc 2.6.2)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="PERL">Perl (perl 5.18.2)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="PHP">PHP (php 5.5.9)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="PYTHON" selected>Python (python 2.7.6)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="RUBY">Ruby (ruby 2.1.1)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="R">R (RScript 3.0.2)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="RUST">Rust (rustc 1.4.0)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="SCALA">Scala (scalac 2.9.2)</option>
+            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="TEXTFILE">Text</option>
           </select>
         </div>
         <div id="settings">
@@ -139,7 +183,7 @@
       <div id="editor-statusbar"></div>
 
       <div class="row">
-        <div id="showres">
+        <div id="showres12">
           <div class="pull-left user-input-area">
             <div class="checkbox">
               <label>
@@ -148,33 +192,36 @@
               </label>
             </div>
           </div>
-
-          <div style="margin-left: 65.4%" class="run-save-panel">
-            <button
-              class="btn btn-success"
-              id="runcode"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="Compile and Run"
-              name="run_code"
-            >
-              Compile and Run
-            </button>
-          </div>
-          <div style="margin-left: 85.4%" class="run-save-panel">
-            <button
-              class="btn btn-success"
-              id="submit_code"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="submit"
-              name="submit_code"
-            >
-              Submit
-            </button>
-          </div>
+            <div class="row">
+              <div class="col offset-8" style="width: 20%; flex: 0 0 20%;max-width: 20%">
+                <button
+                  class="btn btn-success"
+                  id="runcode"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Compile and Run"
+                  name="run_code"
+                >
+                  Compile and Run
+                </button>
+              </div>
+          
+              <div class="col" style="width: 12.499999995%; flex: 0 0 12.499%;max-width: 12.499%">
+                <button
+                  class="btn btn-success float-end"
+                  id="submit_code"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="submit"
+                  name="submit_code"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
         </div>
       </div>
+
 
       <div class="row">
         <div class="input-container">

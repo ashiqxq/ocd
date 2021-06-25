@@ -43,14 +43,18 @@
         <ul class="navbar-nav d-flex justify-content-end w-100 mb-2 mb-lg-0">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'teacher_dashboard' %}">Home</a>
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{% url 'teacher_dashboard' %}"
+              >Home</a
+            >
           </li>
           {% else %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
-          {% endif %}
-          {% if user.is_authenticated %}
+          {% endif %} {% if user.is_authenticated %}
           <li class="nav-item ms-5">
             <a class="nav-link">Hello {{user.first_name}}</a>
           </li>

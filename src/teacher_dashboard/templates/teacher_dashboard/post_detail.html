@@ -23,6 +23,7 @@
     </tr>
   </tbody>
 </table>
+{%if assignment.status %}
 <table class="table table-hover table-borderless">
   <tbody>
     <tr>
@@ -45,5 +46,4 @@
     {% endfor %}
   </tbody>
 </table>
-
-{% endblock %}
+{% endif %} {% endblock %}
