@@ -57,6 +57,11 @@
     font-size: 2.3rem;
 }
 
+@keyframes slide-in {
+    from {top:0;right:-400px;}
+    to {top:0;right:0;}
+}
+
 .col-right {
     position: absolute;
     right: 0;
@@ -66,12 +71,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    animation-name: slide-in;
+    animation-duration: .8s;
+    animation-timing-function: ease-in;
+}
+
+@keyframes fade-in {
+  from {opacity:0;}
+  to {opacity:1;}
 }
 
 .col-right .content {
-    margin: 0 250px;
+    margin: 0 200px;
     color: white;
     width: 100%;
+    animation-name: fade-in;
+    animation-duration: 2.2s;
     /* background-color: red; */
 }
 

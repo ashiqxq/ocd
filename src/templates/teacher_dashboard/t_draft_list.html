@@ -1,0 +1,13 @@
+{% extends 'teacher_dashboard/base.html' %}
+
+{% block content %}
+    {% for draft in draft_list %}
+        <div class="post">
+            <div class="date">
+                <p>Published on: {{ draft.published_date|date:"H:m d M Y"}}</p>
+            </div>
+            <h1><a href="{% url 'post_detail' pk=draft.pk %}">{{ draft.assignment_name }}</a></h1>
+            <h4> Course : {{draft.course_id.course_name}}</h4>
+        </div>
+    {% endfor %}
+{% endblock %}
