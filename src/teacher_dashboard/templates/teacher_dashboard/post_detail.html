@@ -46,4 +46,11 @@
     {% endfor %}
   </tbody>
 </table>
+{% else %}
+<form action="{% url 'add_new_assignment' %}" , method="POST">
+  {% csrf_token %}
+  <button type="submit" name="publish" class="btn green-btn w-25 mt-3 offset-4">
+    Publish
+  </button>
+</form>
 {% endif %} {% endblock %}

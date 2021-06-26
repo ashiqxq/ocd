@@ -268,7 +268,6 @@ $(document).ready(function () {
       csrfmiddlewaretoken: token,
       pk: data_pk,
     };
-    console.log("hi", data_pk);
     // AJAX request to Django for running code
     $.ajax({
       url: "check/",
@@ -289,7 +288,6 @@ $(document).ready(function () {
           );
         $(".outputbox").show();
         $("#submit_code").prop("disabled", false);
-
         var cstat = response.compile_status;
         var rstat = response.run_status.status;
         var status1 = response.submission_status;
@@ -297,6 +295,7 @@ $(document).ready(function () {
         $(".outputerror").show();
         if (status1 == 0) {
           $(".errorkey").html("Successful_submission");
+          // $(".outputerror .errormessage").css("background", rgb(0, 255, 128));
           $(".errormessage").html("successfullly submitted");
         } else {
           $(".errorkey").html("contact the admin");
