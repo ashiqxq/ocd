@@ -295,11 +295,18 @@ $(document).ready(function () {
         $(".outputerror").show();
         if (status1 == 0) {
           $(".errorkey").html("Successful_submission");
-          $(".errormessage").html("successfullly submitted");
+          $(".errormessage")
+            .html("Your code has been successfullly submitted")
+            .css("background", "green");
         } else {
           $(".errorkey").html("contact the admin");
-          $(".errormessage").html("Already submitted");
+          $(".errormessage")
+            .html("Already submitted")
+            .css("background", "orange");
         }
+        $(".io-show").hide();
+        $(".output-details").hide();
+        console.log("thrice");
       },
 
       error: function (error) {
