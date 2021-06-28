@@ -24,54 +24,49 @@ def runCode(request):
         with open('codes.txt', 'w') as cf, open('inputs.txt', 'w') as snp:
             cf.write(source)
             snp.write(inp)
-        codefile = 'test'
+        codefile = 'main'
         file_ext = {'CPP': 'cpp', 'C': 'c', 'PYTHON': 'py'}
+        run_cmd = {'CPP': 'g++', 'C': 'gcc'}
         run_dict = {'CPP': [f'{codefile}'], 'C': [f'{codefile}'], 'PYTHON': ['python', f'{codefile}.{file_ext[lang]}']}
         shutil.copyfile('codes.txt', f'{codefile}.{file_ext[lang]}')
         open('codes.txt', 'w').close()
-        if lang == 'C':
-            subprocess.run(['gcc', f'{codefile}.c', '-o', f'{codefile}'])
-        elif lang == 'CPP':
-            subprocess.run(['g++', f'{codefile}.cpp', '-o', f'{codefile}'])
-        with open('inputs.txt', 'r') as inpt, open('outputs.txt', 'w') as outpt:
-            print(inpt, outpt)
-            of = subprocess.run(run_dict[lang], stdin=inpt, stdout=outpt, text=True)
+        if lang == 'C' or lang=='CPP':
+            with open('inputs.txt', 'r') as inpt, open('outputs.txt', 'w') as outpt:
+                proc = subprocess.run([run_cmd[lang], f'{codefile}.{file_ext[lang]}', '-o', f'{codefile}'], stdin=inpt, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                subprocess.run(['rm', f'{codefile}.{file_ext[lang]}'])
+                inpt.close()
+                error = proc.stderr
+                if error == '':
+                    proc = subprocess.run([f'./{codefile}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                    subprocess.run(['rm', f'{codefile}'])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == '':
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(['rm', 'inputs.txt'])
+        elif lang == 'PYTHON':
+            with open('inputs.txt', 'r') as inpt, open('outputs.txt', 'w') as outpt:
+                proc = subprocess.run(['python', f'{codefile}.{file_ext[lang]}'], stdin=inpt, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                subprocess.run(['rm', f'{codefile}.{file_ext[lang]}'])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == '':
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(['rm', 'inputs.txt'])
         with open('outputs.txt', 'r') as f:
             output = f.read()
             otp_html = "<pre>"+output+"</pre>"
-        open('inputs.txt', 'w').close()
-        open('outputs.txt', 'w').close()
-        # if 'input' in request.POST:
-        #     inp = request.POST['input']
-        #     is_inp = 1
-        #     with open('inputs.txt', 'w') as snp:
-        # 	    snp.write(inp)
-        #
-        # output = ""
-        # flag = 0
-        # try:
-        # 	# save original standart output reference
-        #     oso = sys.stdout	 # change the standard output to the file we created
-        #     osi= sys.stdin
-        #     sys.stdin = open('inputs.txt', 'r')
-        #     sys.stdout = open('outputs.txt', 'w')
-        # 	# execute code
-        #     exec(source)  # example =>   print("hello world")
-        #     sys.stdout.close()
-        #     sys.stdin.close()
-        #     sys.stdin = osi
-        #     sys.stdout = oso  # reset the standard output to its original value
-        #
-        # 	# finally read output from file and save in output variable
-        #     with open('outputs.txt', 'r') as f:
-        #     	output = f.read()
-        #     otp_html = "<pre>"+output+"</pre>"
-        #     flag = 1
-        # except Exception as e:
-        # 	# to return error in the code
-        # 	sys.stdout = oso
-        # 	sys.stdin = osi
-        # 	output = e
+            f.close()
+        subprocess.run(['rm', 'outputs.txt'])
         res = {
             "run_status": {
                 "memory_used": "2744",

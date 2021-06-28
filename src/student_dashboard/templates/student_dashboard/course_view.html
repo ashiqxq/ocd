@@ -1,0 +1,54 @@
+{% extends 'student_dashboard/base.html' %} {% load static %} {% block style %}
+
+<link rel="stylesheet" href="{% static 'css/my_styles.css' %}" />
+
+{% endblock style %} {% block content %}
+
+<div class="">
+  <div class="d-flex justify-content-between">
+    <h2>{{course.course_name}} | {{course.course_id}}</h2>
+    {% comment %} <h5 class="fst-italic">
+      Enrollment Code:
+      <span class="text-decoration-underline">{{course.enrollment_code}} </span>
+    </h5> {% endcomment %}
+  </div>
+  <p>{{course.course_desc}}</p>
+</div>
+
+  <h3>Assignments:</h3>
+<div class="row row-cols-1 row-cols-md-3 g-4" >
+  {% if assignment_list %} {% for assignment in assignment_list %}
+  <div class="col course-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title row">
+          <div class="col-7">
+            <a href="{% url 'sviewAssignment' course_id=course.course_id assignment_slug=assignment.slug %}">
+              <h3>{{assignment.assignment_name}}</h3>
+            </a>
+          </div>
+          <div class="col-4">
+            {% comment %}
+            <h5>{{course.course_id}}</h5>
+            {% endcomment %}
+          </div>
+          
+        </div>
+        <p class="card-text">
+          {% comment %} {{course.course_desc}} {% endcomment %}
+        <div class="">
+          <div class="date">
+            <p>Published on: {{ assignment.published_date|date:"H:m d M Y"}}</p>
+          </div>
+          <div class="date">
+            <p>Due Date: {{ assignment.due_date|date:"H:m d M Y"}}</p>
+          </div>
+        </div>
+        </p>
+      </div>
+    </div>
+  </div>
+  {%endfor%} {% endif %}
+</div>
+
+{% endblock content %}

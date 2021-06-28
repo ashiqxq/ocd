@@ -1,0 +1,106 @@
+{% extends 'student_dashboard/base.html' %} {% load static %} {% block style %}
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="{% static 'css/my_styles.css' %}" />
+{% endblock style %} {% block content %}
+
+<!-- course create Modal -->
+<div
+  class="modal fade"
+  id="courseModal"
+  tabindex="-1"
+  aria-labelledby="courseModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="courseModalLabel">Enrollment</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'enrollCourse' %}">
+          {% csrf_token %}
+          <div class="mb-3 row">
+            <label for="enroll_code" class="col-sm-5 col-form-label"
+              >Course Enrollment Code</label
+            >
+            <div class="col-sm-7">
+              <input
+                type="text"
+                class="form-control"
+                id="enroll_code"
+                name="enroll_code"
+              />
+            </div>
+          </div>
+          <button type="submit" class="btn green-btn w-100 mt-3">Enroll</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-3 g-4" style="margin: -24px">
+    {% if courses %} {% for course in courses %}
+    <div class="col course-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title row">
+            <div class="col-7">
+              <a href="{% url 'scourseView' %}?course_id={{course.course_id}}">
+                <h3>{{course.course_name}}</h3>
+              </a>
+            </div>
+            <div class="col-4">
+              <h5>{{course.course_id}}</h5>
+            </div>
+          </div>
+          <p class="card-text">{{course.course_desc}}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            Teacher : {{course.teacher_id.first_name}}
+            {{course.teacher_id.last_name}}
+        </div>
+      </div>
+    </div>
+    {%endfor%} {% endif %}
+
+    <div class="col empty-course-card">
+      <a
+        href="#"
+        class="card"
+        data-bs-toggle="modal"
+        data-bs-target="#courseModal"
+      >
+        <div class="card-body">
+          <div
+            class="
+              d-flex
+              flex-column
+              justify-content-center
+              align-items-center
+              h-100
+            "
+          >
+            <i
+              class="fa fa-plus-circle"
+              style="font-size: 60px; color: #b4b4b4"
+              aria-hidden="true"
+            ></i>
+            <p class="text-muted p-0 m-0">Enroll to a course</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

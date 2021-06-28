@@ -1,298 +1,222 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Online Compiler</title>
-    <script
-      src="{% static 'js/jquery.min.js' %}"
-      type="text/javascript"
-      charset="utf-8"
-    ></script>
-    <script
-      src="{% static 'js/bootstrap.min.js' %}"
-      type="text/javascript"
-      charset="utf-8"
-    ></script>
-    <script
-      src="{% static 'ace-builds/src/ace.js' %}"
-      type="text/javascript"
-      charset="utf-8"
-    ></script>
-    <script
-      src="{% static 'ace-builds/src/ext-statusbar.js' %}"
-      type="text/javascript"
-      charset="utf-8"
-    ></script>
-    <script
-      src="{% static 'ace-builds/src/ext-language_tools.js' %}"
-      type="text/javascript"
-      charset="utf-8"
-    ></script>
+{% extends 'student_dashboard/base.html' %} {% load static %} {% block style %}
 
-    <script
-      src="{% static 'js/my_js.js' %}"
-      type="text/javascript"
-      charset="utf-8"
-    ></script>
-    <link rel="stylesheet" href="{% static 'student_dashboard/styles/base.css' %}" />
-        <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-      crossorigin="anonymous"
-    />
-        <link
-      rel="stylesheet"
-      href="{% static 'student_dashboard/styles/glyphicon.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'css/my_style.css' %}"
-    />
-  </head>
+<script
+  src="{% static 'js/jquery.min.js' %}"
+  type="text/javascript"
+  charset="utf-8"
+></script>
+<script
+  src="{% static 'ace-builds/src/ace.js' %}"
+  type="text/javascript"
+  charset="utf-8"
+></script>
+<script
+  src="{% static 'ace-builds/src/ext-statusbar.js' %}"
+  type="text/javascript"
+  charset="utf-8"
+></script>
+<script
+  src="{% static 'ace-builds/src/ext-language_tools.js' %}"
+  type="text/javascript"
+  charset="utf-8"
+></script>
 
-  <br>
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
-    <!-- <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a style="color: #fff" class="navbar-brand" href="#">AULAS</a>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">IDE</a></li>
-        </ul>
-      </div>
-    </nav> -->
-    <header class="container">
-      <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
-        <a class="navbar-brand" href="{% url 'home' %}">Aulas | CoderGo</a>
-        <ul class="navbar-nav d-flex justify-content-end w-100 mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          {% if user.is_authenticated %}
-          <li class="nav-item ms-5">
-            <a class="nav-link">Hello {{user.first_name}}</a>
-          </li>
-          <li class="nav-item ms-5">
-            <a class="nav-link">Profile</a>
-          </li>
-          <li class="nav-item ms-5">
-            <a class="nav-link" href="{% url 'ide' %}">IDE</a>
-          </li>
-          <li class="nav-item ms-5">
-            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-          </li>
-          {% else %}
-          <li class="nav-item ms-5">
-            <a class="nav-link" aria-current="page" href="#">About Us</a>
-          </li>
-          <li class="nav-item ms-5">
-            <a class="nav-link" aria-current="page" href="#">Help</a>
-          </li>
-          {% endif %}
-        </ul>
-      </nav>
-    </header>
-    <br />
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <h8 id="id_passer" data-pk="{{assignment.pk}}">
-            <b> Assignment name: </b> {{ assignment.assignment_name }}
-          </h8>
-        </div>
-        <div class="col-lg-4">
-          <h8>
-            <b> Published on: </b> {{ assignment.published_date|date:"H:m d M Y"}}
-          </h8>
-        </div>
-        <div class="col-lg-4">
-          <h8> <b> Course id: </b> {{assignment.course_id.course_name}} </h8>
-        </div>
+<script
+  src="{% static 'js/my_js.js' %}"
+  type="text/javascript"
+  charset="utf-8"
+></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/my_style.css' %}" />
+<link
+  rel="stylesheet"
+  href="{% static 'teacher_dashboard/styles/assignment_view.css' %}"
+/>
+{% endblock style %} {% block content %}
+  <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+  <h2 id="id_passer" data-pk={{assignment.assignment_id}}>{{assignment.assignment_name}}</h2>
+  <div class="row">
+    <div class="col-8 p-0 pt-2">
+      <div class="left-col p-4">
+        <div id="assignment_body"><h3>Problem:</h3></div>
       </div>
       <br />
-      <div class="row">
-        <div class="col-lg-8">
-          <h8>
-            <b> Question: </b> {{assignment.assignment_body}}
-          </h8>
-        </div>
-        <div class="col-lg-4">
-          <h8>
-            <b> Due date: </b> {{ assignment.due_date|date:"H:m d M Y" }}
-          </h8>
-        </div>
-      </div>
-      <br />
-      <br />
-    </div>
-    <br />
-    <br />
-
-    <div class="container">
-      <div id="topbar">
-        <div class="lang-choose">
-          <select class="form-control" name="lang" id="lang" data-show-icon="true">
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="CPP">C++ (g++ 4.8.4)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="C">C (gcc 4.8.4)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="CLOJURE">Clojure (clojure 1.1.0)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="CSS">CSS</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="CSHARP">C# (mono 3.2.8)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="GO">Go (go 1.4.2)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="HASKELL">Haskell (ghc 7.4.1)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="JAVA">Java (openjdk 1.7.0_09)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="JAVASCRIPT">JavaScript (Rhino 1.7)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="LISP">Lisp (csc 4.8.0.5)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="OBJECTIVEC">Objective-C (clang 3.3)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="PASCAL">Pascal (fpc 2.6.2)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="PERL">Perl (perl 5.18.2)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="PHP">PHP (php 5.5.9)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="PYTHON" selected>Python (python 2.7.6)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="RUBY">Ruby (ruby 2.1.1)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="R">R (RScript 3.0.2)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="RUST">Rust (rustc 1.4.0)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="SCALA">Scala (scalac 2.9.2)</option>
-            <option data-subtext="<i class='glyphicon glyphicon-download-alt'></i>" value="TEXTFILE">Text</option>
-          </select>
-        </div>
-        <div id="settings">
-          <div class="theme-choose">
-            <select class="form-control" name="theme" id="theme">
-              <option value="Light" selected>Light</option>
-              <option value="Monokai">Monokai</option>
-              <option value="Solarised Light">Solarised Light</option>
-              <option value="Twilight">Twilight</option>
+      <div
+        class=""
+        style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
+      >
+        <div id="topbar">
+          <div class="lang-choose">
+            <select class="form-select" name="lang" id="lang">
+              <option value="C">C (gcc 4.8.4)</option>
+              <option value="CPP">C++ (g++ 4.8.4)</option>
+              <option value="CLOJURE">Clojure (clojure 1.1.0)</option>
+              <option value="CSS">CSS</option>
+              <option value="CSHARP">C# (mono 3.2.8)</option>
+              <option value="GO">Go (go 1.4.2)</option>
+              <option value="HASKELL">Haskell (ghc 7.4.1)</option>
+              <option value="JAVA">Java (openjdk 1.7.0_09)</option>
+              <option value="JAVASCRIPT">JavaScript (Rhino 1.7)</option>
+              <option value="LISP">Lisp (csc 4.8.0.5)</option>
+              <option value="OBJECTIVEC">Objective-C (clang 3.3)</option>
+              <option value="PASCAL">Pascal (fpc 2.6.2)</option>
+              <option value="PERL">Perl (perl 5.18.2)</option>
+              <option value="PHP">PHP (php 5.5.9)</option>
+              <option value="PYTHON" selected>Python (python 2.7.6)</option>
+              <option value="RUBY">Ruby (ruby 2.1.1)</option>
+              <option value="R">R (RScript 3.0.2)</option>
+              <option value="RUST">Rust (rustc 1.4.0)</option>
+              <option value="SCALA">Scala (scalac 2.9.2)</option>
+              <option value="TEXTFILE">Text</option>
             </select>
           </div>
-          <a class="" id="download">
-            download code
-            <span
-              class="glyphicon glyphicon-download-alt"
-              aria-hidden="true"
-            ></span>
-          </a>
         </div>
-      </div>
 
-      <pre id="editor"></pre>
+        <pre id="editor"></pre>
 
-      <div id="editor-statusbar"></div>
+        <div id="editor-statusbar"></div>
 
-      <div class="row">
-        <div id="showres">
-          <div class="pull-left user-input-area">
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" id="user-input" /> Use custom input for
-                testing your code
-              </label>
-            </div>
-          </div>
-            <div class="row">
-              <div class="col offset-8" style="width: 20%; flex: 0 0 20%;max-width: 20%">
-                <button
-                  class="btn btn-success float-end"
-                  id="runcode"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Compile and Run"
-                  name="run_code"
-                >
-                  Compile
-                </button>
-              </div>
-          
-              <div class="col" style="width: 10.499999995%; flex: 0 0 10.499%;max-width: 10.499%">
-                <button
-                  class="btn btn-success float-end"
-                  id="submit_code"
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="submit"
-                  name="submit_code"
-                >
-                  Submit
-                </button>
+        <div class="row">
+          <div id="showres">
+            <div class="pull-left user-input-area">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="user-input" /> Use custom input for
+                  testing your code
+                </label>
               </div>
             </div>
-        </div>
-      </div>
 
-
-      <div class="row">
-        <div class="input-container">
-          <textarea
-            id="custom-input"
-            class="input-textarea"
-            placeholder="Write inputs to program."
-          ></textarea>
-        </div>
-      </div>
-
-      <div class="outputbox">
-        <div class="outputio">
-          <div class="outputerror">
-            <div class="errorkey"></div>
-            <pre class="errormessage"></pre>
-          </div>
-
-          <div class="io-show">
-            <b>Output</b>
-            <pre class="output-text outputo"></pre>
-            <b>Input</b>
-            <pre class="output-text outputi"></pre>
+            <div class="float-end run-save-panel">
+              <button
+                class="btn btn-success"
+                id="runcode1"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Compile and Run"
+                name="run_code"
+              >
+                Compile and Run
+              </button>
+              <button
+                class="btn btn-success"
+                id="submit_code"
+                data-toggle="tooltip"
+                data-placement="top"
+                title="submit"
+                name="submit_code"
+              >
+                Submit
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="output-details">
-          <div class="correct log-details">
-            <b>Log Details:</b>
-            <div id="demo"></div>
-            <script type="text/javascript">
-              var myDate = new Date();
-              var hours = myDate.getHours();
-              var minutes = myDate.getMinutes();
-              var ampm = hours >= 12 ? "pm" : "am";
-              hours = hours % 12;
-              hours = hours ? hours : 12;
-              minutes = minutes < 10 ? "0" + minutes : minutes;
-              var strTime = hours + ":" + minutes + ampm;
-              document.getElementById("demo").innerHTML =
-                myDate.getDate() +
-                "/" +
-                (parseInt(myDate.getMonth()) + 1).toString() +
-                "/" +
-                myDate.getFullYear() +
-                " at " +
-                strTime;
-            </script>
+        <div class="row">
+          <div class="input-container">
+            <textarea
+              id="custom-input"
+              class="input-textarea"
+              placeholder="Write inputs to program."
+            ></textarea>
           </div>
-          <div class="correct time">
-            <b>Time (sec)</b>
-            <div class="value"></div>
+        </div>
+
+        <div class="outputbox">
+          <div class="outputio">
+            <div class="outputerror">
+              <div class="errorkey"></div>
+              <pre class="errormessage"></pre>
+            </div>
+
+            <div class="io-show">
+              <b>Output</b>
+              <pre class="output-text outputo"></pre>
+              <b>Input</b>
+              <pre class="output-text outputi"></pre>
+            </div>
           </div>
-          <div class="correct memory">
-            <b>Memory (KB)</b>
-            <div class="value"></div>
-          </div>
-          <div class="correct runstat">
-            <b>Run Status</b>
-            <div class="value"></div>
-          </div>
-          <div class="correct compilestat">
-            <b>Compile Status</b>
-            <div class="value"></div>
+
+          <div class="output-details">
+            <div class="correct log-details">
+              <b>Log Details:</b>
+              <div id="demo"></div>
+              <script type="text/javascript">
+                var myDate = new Date();
+                var hours = myDate.getHours();
+                var minutes = myDate.getMinutes();
+                var ampm = hours >= 12 ? "pm" : "am";
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                var strTime = hours + ":" + minutes + ampm;
+                document.getElementById("demo").innerHTML =
+                  myDate.getDate() +
+                  "/" +
+                  (parseInt(myDate.getMonth()) + 1).toString() +
+                  "/" +
+                  myDate.getFullYear() +
+                  " at " +
+                  strTime;
+              </script>
+            </div>
+            <div class="correct time">
+              <b>Time (sec)</b>
+              <div class="value"></div>
+            </div>
+            <div class="correct memory">
+              <b>Memory (KB)</b>
+              <div class="value"></div>
+            </div>
+            <div class="correct runstat">
+              <b>Run Status</b>
+              <div class="value"></div>
+            </div>
+            <div class="correct compilestat">
+              <b>Compile Status</b>
+              <div class="value"></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="col-4">
+      <div class="right-col p-4 pt-0">
+        <div class="d-flex justify-content-between">
+          <p>Due Date:</p>
+          <p>{{assignment.due_date}}</p>
+        </div>
+        <div class="d-flex justify-content-between">
+          <p>Published Date:</p>
+          <p>{{assignment.published_date}}</p>
+        </div>
+        <hr />
+        <div class="d-flex justify-content-between">
+          <p>Course ID:</p>
+          <p>{{assignment.course_id.course_id}}</p>
+        </div>
+        <div class="d-flex justify-content-between">
+          <p>Course Name:</p>
+          <p>{{assignment.course_id.course_name}}</p>
+        </div>
+        <div class="d-flex justify-content-between">
+          <p>Teacher:</p>
+          <p>
+            {{assignment.course_id.teacher_id.first_name}}
+            {{assignment.course_id.teacher_id.last_name}}
+          </p>
+        </div>
+        <div class="d-flex justify-content-between">
+          <p>Email:</p>
+          <p>{{assignment.course_id.teacher_id.email}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <footer class="container">
-      <span class="pull-right"> Copyright © 2021 MARS</span>
-    </footer>
-  </body>
-</html>
+  <script type="text/javascript">
+    html = $.parseHTML("{{assignment.assignment_body}}");
+    var $assignmentBody = $("#assignment_body");
+    $assignmentBody.append(html[0].data);
+  </script>
+  {% endblock content%}
+</body>

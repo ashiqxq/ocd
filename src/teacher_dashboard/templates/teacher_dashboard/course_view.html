@@ -1,0 +1,99 @@
+{% extends 'teacher_dashboard/base.html' %} {% load static %} {% block style %}
+
+<link rel="stylesheet" href="{% static 'css/my_styles.css' %}" />
+
+{% endblock style %} {% block content %}
+
+<div class="">
+  <div class="d-flex justify-content-between">
+    <h2>{{course.course_name}} | {{course.course_id}}</h2>
+    <h5 class="fst-italic">
+      Enrollment Code:
+      <span class="text-decoration-underline">{{course.enrollment_code}} </span>
+    </h5>
+  </div>
+  <p>{{course.course_desc}}</p>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4" >
+  {% if assignment_list %} {% for assignment in assignment_list %}
+  <div class="col course-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title row">
+          <div class="col-7">
+            <a href="{% url 'viewAssignment' course_id=course.course_id assignment_slug=assignment.slug %}">
+              <h3>{{assignment.assignment_name}}</h3>
+            </a>
+          </div>
+          <div class="col-4">
+            {% comment %}
+            <h5>{{course.course_id}}</h5>
+            {% endcomment %}
+          </div>
+          <div class="col-1 pe-2">
+            <img
+              class="card-option"
+              id="card-option"
+              onclick="moreOptions('{{course.course_id}}')"
+              src="https://img.icons8.com/ios-glyphs/20/000000/menu-2.png"
+            />
+            <div class="card-options card-id-{{course.course_id}}">
+              <ul class="list-group">
+                <a
+                  href="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editCourseModal"
+                  class="list-group-item"
+                  onclick="hideOptions('{{course.course_id}}', '{{course.course_name}}','{{course.course_desc}}')"
+                  >Edit</a
+                >
+                <a
+                  href="{% url 'deleteCourse' %}?course_id={{course.course_id}}"
+                  class="list-group-item"
+                  >Delete</a
+                >
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="card-text">
+          {% comment %} {{course.course_desc}} {% endcomment %}
+        <div class="">
+          <div class="date">
+            <p>Published on: {{ assignment.published_date|date:"H:m d M Y"}}</p>
+          </div>
+          <div class="date">
+            <p>Due Date: {{ assignment.due_date|date:"H:m d M Y"}}</p>
+          </div>
+        </div>
+        </p>
+      </div>
+    </div>
+  </div>
+  {%endfor%} {% endif %}
+
+  <div class="col empty-course-card">
+    <a href="{% url 'createAssignment' course_id=course.course_id %}" class="card">
+      <div class="card-body">
+        <div
+          class="
+            d-flex
+            flex-column
+            justify-content-center
+            align-items-center
+            h-100
+          "
+        >
+          <img
+            src="https://img.icons8.com/material-outlined/100/000000/add.png"
+            style="filter: opacity(0.4) drop-shadow(0 0 0 blue)"
+          />
+          <p class="text-muted p-0 m-0">Create a new assignment</p>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+{% endblock content %}
