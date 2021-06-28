@@ -1,3 +1,4 @@
+Things to check
 # Python version - 3.8
  Django version - 3.0
  c/c++ compiler has to be installed to run the c/c++ codes
