@@ -57,11 +57,6 @@
     font-size: 2.3rem;
 }
 
-@keyframes slide-in{
-  from {top:0;right:-400px;}
-  to {top:0;right:0;}
-}
-
 .col-right {
     position: absolute;
     right: 0;
@@ -71,22 +66,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    animation-name: slide-in;
-    animation-duration: 0.8s;
-}
-
-@keyframes fade-in {
-    from {opacity:0;}
-    to {opacity:1;}  
 }
 
 .col-right .content {
-    margin: 0 200px;
+    margin: 0 250px;
     color: white;
     width: 100%;
-    animation-name: fade-in;
-    animation-duration: 2.2s;
-    animation-timing-function: ease-in;
     /* background-color: red; */
 }
 
@@ -111,4 +96,71 @@ label {
     color: #a1a1a1;
     font-size: 16px;
     font-weight: 600;
+}
+
+.form-box{
+  width:76%;
+  margin: 0 auto;
+}
+
+.custom-select{
+  font-size: 1.4rem;
+  margin: 14px 0 22px 0;
+  padding:1%;
+  border: 1px solid;
+}
+
+.margin-22{
+  margin-bottom: 22px;
+}
+
+.date{
+  margin: 0 auto;
+  left:-14px;
+}
+
+.btn-ass-1{
+  height:40px;
+  border-radius:5px;
+  font-size:1.4rem;
+  color:white;
+  padding: 0 2%;
+  background-color:#39A2DB;
+  align-items: center;
+  box-shadow: none;
+  border:none;
+  margin:8px 18px 20px 0px;
+}
+
+.btn-ass-2{
+  height:40px;
+  border-radius:5px;
+  font-size:1.4rem;
+  color:white;
+  padding: 0 2%;
+  background-color:#F55C47;
+  align-items: center;
+  box-shadow: none;
+  border:none;
+  margin:8px 18px 20px 0px;
+}
+
+.btn-ass-1:hover{
+  background-color:#39A2AB;
+}
+
+.btn-ass-2:hover{
+  background-color:#F55C17;
+}
+
+input:focus {
+    outline: none !important;
+    border-color: #66DE93 !important;
+    box-shadow: 0 0 10px #66DE93 !important;
+}
+
+textarea:focus{
+  outline: none !important;
+  border-color: #66DE93 !important;
+  box-shadow: 0 0 10px #66DE93 !important;
 }
