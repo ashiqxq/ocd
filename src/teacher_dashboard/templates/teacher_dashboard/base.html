@@ -56,9 +56,6 @@
           </li>
           {% endif %} {% if user.is_authenticated %}
           <li class="nav-item ms-5">
-            <a class="nav-link">Hello {{user.first_name}}</a>
-          </li>
-          <li class="nav-item ms-5">
             <a class="nav-link" href="{% url 'post_new' %}">New Assignment</a>
           </li>
           <li class="nav-item ms-5">
@@ -78,6 +75,11 @@
         </ul>
       </nav>
     </header>
+    {% if user.is_authenticated %}
+    <div class="hello">
+      <h2 class>Hello {{user.first_name}}</h2>
+    </div>
+    {%endif%}
     <main class="container">{% block content %}{% endblock content %}</main>
     <script type="text/javascript">
       $(function () {
