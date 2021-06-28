@@ -17,6 +17,6 @@ urlpatterns = [
         name="sviewAssignment",
     ),
     re_path(r"^run/$", viewsc.runCode, name="run"),
-    re_path(r'^submit/$', views.NewSubmission, name='submit'),
+    re_path(r"^submit/$", views.NewSubmission, name="submit"),
     path("post/<int:pk>", views.PostDetailView, name="st_post_detail"),
 ]
