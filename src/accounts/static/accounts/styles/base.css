@@ -50,11 +50,12 @@ body {
     position: absolute;
     /* right: 0; */
     top: 22%;
+    width:40%;
 }
 
 .hero-img-wrapper {
     position: absolute;
-    right: 0;
+    right: 9%;
     top: 12%;
 }
 
@@ -84,6 +85,7 @@ body {
     font-weight: 500 !important;
     font-size: 1.2rem;
     border-radius: 8px;
+    margin-left: 26px;
 }
 
 .green-outline-btn:hover {
@@ -105,13 +107,13 @@ body {
     font-size: 52px;
     font-weight: 700;
     letter-spacing: 0.2rem;
-    line-height: 3rem;
+    line-height: 3.5rem;
 }
 
 .subtitle-text {
     letter-spacing: 0.1rem;
     color: #606a79;
-    line-height: 1.3rem;
+    line-height: 1.4rem;
     padding-top: 16px;
 }
 

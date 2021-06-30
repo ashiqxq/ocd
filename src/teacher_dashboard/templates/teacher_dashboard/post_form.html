@@ -11,6 +11,7 @@ action="{% url 'edit_assignment' course_id=course.course_id assignment_slug=assi
 >
   {% csrf_token %}
 
+
   <div class="mb-3 row">
     <label for="course_id" class="col-sm-2 col-form-label">Course ID</label>
     <div class="col-sm-10">
@@ -92,8 +93,9 @@ action="{% url 'edit_assignment' course_id=course.course_id assignment_slug=assi
   </div>
 
   <div class="mb-3">
+
     <label for="assignment_form" class="form-label"
-      >Type in the Assignment</label
+      >Detailed Problem Statement</label
     >
 
     <textarea id="editor" name="assignment_form" rows="10" required> </textarea>

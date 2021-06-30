@@ -62,6 +62,7 @@
     to {top:0;right:0;}
   }
 
+
 .col-right {
     position: absolute;
     right: 0;
@@ -81,7 +82,7 @@
 }
 
 .col-right .content {
-    margin: 0 250px;
+    margin: 0 200px;
     color: white;
     width: 100%;
     animation-name: fade-in;
@@ -112,6 +113,7 @@ label {
     font-size: 16px;
     font-weight: 600;
 }
+
 
 
 
@@ -230,3 +232,4 @@ label {
     font-size: 16px;
     font-weight: 600;
 } */
+
