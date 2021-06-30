@@ -93,9 +93,9 @@ def courseView(request):
     courseID = request.GET.get("course_id")
     course = course_list.objects.get(course_id=courseID)
     username = request.user.username
-    all_assignments = (
-        student_assignments.objects.filter(status=status_dict["posted"]).filter(course_id=courseID)
-    )
+    all_assignments = student_assignments.objects.filter(
+        status=status_dict["posted"]
+    ).filter(course_id=courseID)
     # print(all_assignments)
     return render(
         request,
@@ -194,8 +194,8 @@ def handle_new_post(request, course_id, assignment_slug=None):
         elif "edit" in request.POST:
             assignment = student_assignments.objects.get(slug=assignment_slug)
             assignment.assignment_name = assignment_name
-            assignment.assignment_body=assignment_detail
-            assignment.due_date=assignment_due
+            assignment.assignment_body = assignment_detail
+            assignment.due_date = assignment_due
             assignment.save()
             return redirect("home")
     return HttpResponse("hello")
@@ -204,17 +204,16 @@ def handle_new_post(request, course_id, assignment_slug=None):
 def viewAssignment(request, course_id, assignment_slug):
     course = course_list.objects.get(course_id=course_id)
     assignment = student_assignments.objects.get(slug=assignment_slug)
-    all_submission_det = (
-        submission.objects.filter(assignment_id=assignment.assignment_id)
+    all_submission_det = submission.objects.filter(
+        assignment_id=assignment.assignment_id
     )
     print(all_submission_det)
     return render(
         request,
         "teacher_dashboard/assignment_view.html",
-        {"course": course, "assignment": assignment,
-        "submissions": all_submission_det
-        },
+        {"course": course, "assignment": assignment, "submissions": all_submission_det},
     )
+
 
 def deleteAssignment(request, assignment_slug):
     assignment = student_assignments.objects.get(slug=assignment_slug)
@@ -222,8 +221,13 @@ def deleteAssignment(request, assignment_slug):
     return redirect("home")
 
 
-
 def SubmissionDetailView(request, pk):
     submission_det = submission.objects.get(submission_id=pk)
-    assignment_det = student_assignments.objects.get(assignment_id=submission_det.assignment_id_id)
-    return render(request, 'teacher_dashboard/submission_detail_and_ide.html', {'assignment':assignment_det, 'submission':submission_det})
+    assignment_det = student_assignments.objects.get(
+        assignment_id=submission_det.assignment_id_id
+    )
+    return render(
+        request,
+        "teacher_dashboard/submission_detail_and_ide.html",
+        {"assignment": assignment_det, "submission": submission_det},
+    )

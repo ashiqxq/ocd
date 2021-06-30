@@ -20,7 +20,7 @@
   </head>
   <body>
     <div class="">
-      <div class="col-5 col-left">
+      <div class="col-lg-5 col-md-7 col-sm-12 col-left">
         <nav class="d-flex justify-content-between">
           <a href="/" class="navbar-brand">CoderGo</a>
           <a
@@ -30,6 +30,14 @@
           >
         </nav>
         <section class="register">
+        <div class="content-s">
+          <h2 class="mb-5">
+            {% ifequal authType 'teacher' %} Start assessing your students'
+            coding and develop their programming skills. {% else %}Pursue your
+            journey of becoming a good programmer. {% endifequal %}
+          </h2>
+          <p></p>
+        </div>
           <p class="subtitle-text2 text-uppercase m-0">Start coding</p>
           <h2 class="title mb-4">Create an account</h2>
           <form action="{% url 'signup' %}?type={{authType}}" , method="POST">
@@ -106,7 +114,7 @@
           </p>
         </section>
       </div>
-      <div class="col-7 col-right">
+      <div class="col-lg-7 col-md-5 col-sm-12 col-right">
         <div class="content">
           <h2 class="mb-5">
             {% ifequal authType 'teacher' %} Start assessing your students'

@@ -1,11 +1,7 @@
 {% extends "accounts/base.html" %} {% block content %} {% load static %}
 <section class="landing-section">
-  {% if user.is_authenticated %}
-  <p>Logged In</p>
-  {% else %}
-
-  <div class="row w-100">
-    <div class="col-md-6 hero-text-wrapper">
+  <div class="row w-100 ">
+    <div class="col-lg-6 mb-3 hero-text-wrapper">
       <section>
         <h1 class="big-text">
           Learn <span class="yellow-text">Coding</span>, Anytime and Anywhere
@@ -33,18 +29,18 @@
         >
       </section>
     </div>
-    <div class="col-md-6 hero-img-wrapper">
+    <div class="col-lg-6 hero-img-wrapper">
       <a href="https://www.freepik.com/vectors/technology" target="_blank">
         <img
           src="{% static 'accounts/images/illustration1.jpg' %}"
           alt="Technology vector created by pch.vector - www.freepik.com"
+          class="img-fluid"
           srcset=""
-          height="500px"
         />
       </a>
     </div>
   </div>
 </section>
 
-<section>{% endif %}</section>
+{% comment %} <section>{% endif %}</section> {% endcomment %}
 {% endblock content %}
