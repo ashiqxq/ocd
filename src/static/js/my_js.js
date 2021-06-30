@@ -46,10 +46,7 @@ $(document).ready(function () {
   editor.session.setMode("ace/mode/python");
   editor.getSession().setTabSize(5);
   var source_code = editor.getValue();
-  editor.setOptions({
-    fontFamily: "monospace",
-    fontSize: "12pt",
-  });
+  editor.setFontSize(14);
   editor.setValue(language[selectedLang], -1);
   var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
   var statusBar = new StatusBar(
@@ -114,6 +111,141 @@ $(document).ready(function () {
   }
 
   //To run the code and get all the status
+  function runCode1() {
+    if (ongoing == true) return;
+    ongoing = true;
+    updateContent();
+    $(".outputbox").hide();
+    $("#runcode").prop("disabled", true);
+
+    var token = $(":input[name='csrfmiddlewaretoken']").val();
+    var input_given = $("#custom-input").val();
+    var run_data = {
+      source: source_code,
+      lang: selectedLang,
+      csrfmiddlewaretoken: token,
+    };
+    if ($("#user-input").prop("checked") == true) {
+      run_data.input = input_given;
+    }
+
+    // AJAX request to Django for running code
+    $.ajax({
+      url: "../../run/",
+      type: "POST",
+      data: run_data,
+      dataType: "json",
+      timeout: 1000000,
+      success: function (response) {
+        ongoing = false;
+        $("html, body")
+          .delay(150)
+          .animate(
+            {
+              scrollTop: $("#showres").offset().top,
+            },
+            1000
+          );
+        $(".outputbox").show();
+        $("#runcode").prop("disabled", false);
+
+        var cstat = response.compile_status;
+        var rstat = response.run_status.status;
+        if (cstat == "OK") {
+          $(".compilestat").children(".value").html(response.compile_status);
+          $(".runstat").children(".value").html(response.run_status.status);
+          $(".time").children(".value").html(response.run_status.time_used);
+          $(".memory").children(".value").html(response.run_status.memory_used);
+
+          if (rstat == "AC") {
+            $(".outputerror").hide();
+            $(".io-show").show();
+            $(".outputo")
+              .html(response.run_status.output_html)
+              .css("color", "#000");
+            if ($("#user-input").prop("checked") == true)
+              $(".outputi").html(input_given).css("color", "#000");
+            else
+              $(".outputi")
+                .html("Standard input is empty")
+                .css("color", "#a6a6a6");
+          } else {
+            $(".io-show").show();
+            $(".outputo")
+              .html("Standard output is empty")
+              .css("color", "#a6a6a6");
+            if ($("#user-input").prop("checked") == true)
+              $(".outputi").html(input_given).css("color", "#000");
+            else
+              $(".outputi")
+                .html("Standard input is empty")
+                .css("color", "#a6a6a6");
+            $(".outputerror").show();
+
+            if (rstat == "MLE") {
+              $(".errorkey").html("Memory Error");
+              $(".errormessage").html("Memory limit exceeded");
+            } else if (rstat == "TLE") {
+              $(".errorkey").html("Timeout Error");
+              $(".errormessage").html("Time limit exceeded.");
+            } else {
+              $(".errorkey").html("Runtime Error");
+              $(".errormessage").html(response.run_status.status_detail);
+            }
+          }
+        } else {
+          $(".io-show").show();
+          $(".outputo")
+            .html("Standard output is empty")
+            .css("color", "#a6a6a6");
+          if ($("#user-input").prop("checked") == true)
+            $(".outputi").html(input_given).css("color", "#000");
+          else
+            $(".outputi")
+              .html("Standard input is empty")
+              .css("color", "#a6a6a6");
+          $(".time").children(".value").html("0.0");
+          $(".memory").children(".value").html("0");
+          $(".compilestat").children(".value").html("N/A");
+          $(".runstat").children(".value").html("CE");
+
+          $(".outputerror").show();
+          $(".errorkey").html("Compile Error");
+          $(".errormessage").html(response.compile_status);
+        }
+      },
+
+      error: function (error) {
+        ongoing = false;
+        $("html, body")
+          .delay(150)
+          .animate(
+            {
+              scrollTop: $("#showres").offset().top,
+            },
+            1000
+          );
+
+        $("#runcode").prop("disabled", false);
+        $(".outputbox").show();
+        $(".io-show").show();
+        $(".outputo").html("Standard output is empty").css("color", "#a6a6a6");
+        if ($("#user-input").prop("checked") == true)
+          $(".outputi").html(input_given).css("color", "#000");
+        else
+          $(".outputi").html("Standard input is empty").css("color", "#a6a6a6");
+        $(".outputio").show();
+        $(".time").children(".value").html("0.0");
+        $(".memory").children(".value").html("0");
+        $(".compilestat").children(".value").html("N/A");
+        $(".runstat").children(".value").html("N/A");
+
+        $(".errorkey").html("Server error");
+        $(".errormessage").html("Bad Request(403). Please try again!");
+      },
+    });
+  }
+
   function runCode() {
     if (ongoing == true) return;
     ongoing = true;
@@ -269,7 +401,7 @@ $(document).ready(function () {
     console.log("hi", data_pk);
     // AJAX request to Django for running code
     $.ajax({
-      url: "check/",
+      url: "../../submit/",
       type: "POST",
       data: submit_data,
       dataType: "json",
@@ -344,9 +476,12 @@ $(document).ready(function () {
   $("#runcode").click(function () {
     runCode();
   });
+
+  $("#runcode1").click(function () {
+    runCode1();
+  });
   $("#submit_code").click(function () {
-    console.log("hi da");
-    submitCode();
+     submitCode();
   });
 
   //When Changing the language

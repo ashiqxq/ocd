@@ -1,56 +1,51 @@
-{% extends 'teacher_dashboard/base.html' %} {% block content %}
-<table class="table table-hover table-borderless">
-  <tbody>
-    <tr>
-      <th scope="row">Assignment name</th>
-      <td>{{ assignment.assignment_name }}</td>
-    </tr>
-    <tr>
-      <th scope="row">Published on</th>
-      <td>{{ assignment.published_date|date:"H:m d M Y"}}</td>
-    </tr>
-    <tr>
-      <th scope="row">Due-date</th>
-      <td>{{ assignment.due_date|date:"H:m d M Y"}}</td>
-    </tr>
-    <tr>
-      <th scope="row">course id</th>
-      <td>{{assignment.course_id.course_name}}</td>
-    </tr>
-    <tr>
-      <th scope="row">Question</th>
-      <td>{{ assignment.assignment_body}}</td>
-    </tr>
-  </tbody>
-</table>
-{%if assignment.status %}
-<table class="table table-hover table-borderless">
-  <tbody>
-    <tr>
-      <th scope="row">Student_id</th>
-      <th scope="row">Student_name</th>
-      <th scope="row">Assignment_status</th>
-    </tr>
-    {% for student in students_list %}
-    <tr>
-      <td>{{ student.2 }}</td>
-      <td>{{student.0}} {{student.1}}</td>
-      {% if not student.3 %}
-      <td>Not submitted</td>
-      {% else %}
-      <td>
-        <a href="{% url 'submission_detail' pk=student.4 %}"> Submitted </a>
-      </td>
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+
+        <h1 class='posttitle loader'>{{ post.title }}</h1>
+
+        {% if post.published_date %}
+            <div class="date postdate">
+                {{ post.published_date }}
+            </div>
+
+        {% else %}
+            <a class="btn btn-outline-dark" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+        {% endif %}
+
+      <p class='postcontent' >{{ post.text|safe|linebreaksbr }}</p>
+
+
+      {% if user.is_authenticated %}
+          <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><span class="fa fa-pencil"></span></a>
+          <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><span class="fa fa-remove"></span></a>
       {% endif %}
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-{% else %}
-<form action="{% url 'add_new_assignment' %}" , method="POST">
-  {% csrf_token %}
-  <button type="submit" name="publish" class="btn green-btn w-25 mt-3 offset-4">
-    Publish
-  </button>
-</form>
-{% endif %} {% endblock %}
+
+
+
+  <hr>
+  <a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+  <div class="container">
+
+
+  {% for comment in post.comments.all %}
+  <br>
+      {% if user.is_authenticated or comment.approved_comment %}
+
+              {{ comment.created_date }}
+              {% if not comment.approved_comment %}
+                  <a class="btn btn-primary" href="{% url 'comment_remove' pk=comment.pk %}"><span class="fa fa-remove"></span></a>
+                  <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><span class="fa fa-check"></span></a>
+              {% endif %}
+
+          <p>{{ comment.text|safe|linebreaks }}</p>
+          <p>Posted by: <strong>{{ comment.author }}</strong></p>
+
+      {% endif %}
+  {% empty %}
+      <p>No comments posted.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

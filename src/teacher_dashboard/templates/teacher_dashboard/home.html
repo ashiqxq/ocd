@@ -1,0 +1,251 @@
+{% extends 'teacher_dashboard/base.html' %} {% load static %} {% block style %}
+<link
+  rel="stylesheet"
+  href="{% static 'teacher_dashboard/styles/home.css' %}"
+/>
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="{% static 'css/my_styles.css' %}" />
+{% endblock style %} {% block content %}
+<!-- course create Modal -->
+<div
+  class="modal fade"
+  id="courseModal"
+  tabindex="-1"
+  aria-labelledby="courseModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="courseModalLabel">Create a new course</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'createCourse' %}">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label for="courseID" class="form-label">Course ID *</label>
+            <input
+              type="text"
+              class="form-control"
+              id="courseID"
+              name="courseID"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="courseTitle" class="form-label">Course Title *</label>
+            <input
+              type="text"
+              class="form-control"
+              id="courseTitle"
+              name="courseTitle"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="courseDesc" class="form-label"
+              >Course Description</label
+            >
+            <textarea
+              class="form-control"
+              id="courseDesc"
+              name="courseDesc"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="teacher_name" class="form-label">Teacher's Name</label>
+            <input
+              class="form-control"
+              type="text"
+              value="{{request.user.first_name}} {{request.user.last_name}}"
+              aria-label="readonly input example"
+              readonly
+            />
+          </div>
+
+          <button type="submit" class="btn green-btn w-100 mt-3">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- course edit Modal -->
+<div
+  class="modal fade"
+  id="editCourseModal"
+  tabindex="-1"
+  aria-labelledby="editCourseModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCourseModalLabel">Edit course</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'editCourse' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="courseID" class="form-label">Course ID *</label>
+            <input
+              type="text"
+              class="form-control"
+              id="e-courseID"
+              name="courseID"
+              readonly
+            />
+          </div>
+          <div class="mb-3">
+            <label for="courseTitle" class="form-label">Course Title *</label>
+            <input
+              type="text"
+              class="form-control"
+              id="e-courseTitle"
+              name="courseTitle"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="courseDesc" class="form-label"
+              >Course Description</label
+            >
+            <textarea
+              class="form-control"
+              id="e-courseDesc"
+              name="courseDesc"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="teacher_name" class="form-label">Teacher's Name</label>
+            <input
+              class="form-control"
+              type="text"
+              value="{{request.user.first_name}} {{request.user.last_name}}"
+              readonly
+            />
+          </div>
+
+          <button type="submit" class="btn green-btn w-100 mt-3">Edit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row row-cols-1 row-cols-md-3 g-4" style="margin: -24px">
+    {% if courses %} {% for course in courses %}
+    <div class="col course-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title row">
+            <div class="col-7">
+              <a href="{% url 'tCourseView' %}?course_id={{course.course_id}}">
+                <h3>{{course.course_name}}</h3>
+              </a>
+            </div>
+            <div class="col-4">
+              <h5>{{course.course_id}}</h5>
+            </div>
+            <div class="col-1 pe-2">
+              <img
+                class="card-option"
+                id="card-option"
+                onclick="moreOptions('{{course.course_id}}')"
+                src="https://img.icons8.com/ios-glyphs/20/000000/menu-2.png"
+              />
+              <div class="card-options card-id-{{course.course_id}}">
+                <ul class="list-group">
+                  <a
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editCourseModal"
+                    class="list-group-item"
+                    onclick="hideOptions('{{course.course_id}}', '{{course.course_name}}','{{course.course_desc}}')"
+                    >Edit</a
+                  >
+                  <a
+                    href="{% url 'deleteCourse' %}?course_id={{course.course_id}}"
+                    class="list-group-item"
+                    >Delete</a
+                  >
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="card-text">{{course.course_desc}}</p>
+        </div>
+        <div class="card-footer fst-italic d-flex justify-content-between">
+            {% comment %} <h4> Course : {{course.teacher_id.first_name}} {{course.teacher_id.last_name}}</h4> {% endcomment %}
+
+          Enrollment Code: <span>{{course.enrollment_code}}</span>
+        </div>
+      </div>
+    </div>
+    {%endfor%} {% endif %}
+
+    <div class="col empty-course-card">
+      <a
+        href="#"
+        class="card"
+        data-bs-toggle="modal"
+        data-bs-target="#courseModal"
+      >
+        <div class="card-body">
+          <div
+            class="
+              d-flex
+              flex-column
+              justify-content-center
+              align-items-center
+              h-100
+            "
+          >
+           <i
+              class="fa fa-plus-circle"
+              style="font-size: 60px; color: #b4b4b4"
+              aria-hidden="true"
+            ></i>
+            <p class="text-muted p-0 m-0">Create a new course</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  function moreOptions(courseID) {
+    var options = document.getElementsByClassName("card-id-" + courseID)[0];
+    options.style.display = options.style.display == "none" ? "block" : "none";
+  }
+  function hideOptions(courseID, courseTitle, courseDesc) {
+    var options = document.getElementsByClassName("card-id-" + courseID)[0];
+    options.style.display = "none";
+    document.getElementById("e-courseID").value = courseID;
+    document.getElementById("e-courseTitle").value = courseTitle;
+    document.getElementById("e-courseDesc").value = courseDesc;
+  }
+</script>
+
+{% endblock %}
