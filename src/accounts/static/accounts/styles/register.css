@@ -58,9 +58,10 @@
 }
 
 @keyframes slide-in{
-  from {top:0;right:-400px;}
-  to {top:0;right:0;}
-}
+    from {top:0;right:-400px;}
+    to {top:0;right:0;}
+  }
+
 
 .col-right {
     position: absolute;
@@ -112,3 +113,123 @@ label {
     font-size: 16px;
     font-weight: 600;
 }
+
+
+
+
+
+/* .register-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-section .content {
+    width: 40%;
+} */
+
+/* .col-left {
+    padding: 20px 100px;
+}
+
+.navbar-brand{
+    color: #00ad85;
+    font-size: 1.4rem;
+
+}
+
+.green-outline-btn2 {
+    text-decoration: none;
+    color: #00ad85;
+    padding: 4px 8px !important;
+    height: 100%;
+    border: 1px #00C898 solid;
+    font-size: 1rem;
+    border-radius: 4px;
+}
+
+.green-outline-btn2:hover {
+    background-color: #00ad85 !important;
+    color: white;
+    border: 1px #00C898 solid;
+}
+
+.register {
+    margin-top: 20%;
+}
+
+.subtitle-text2 {
+    letter-spacing: 0.2rem;
+    color: #606a79;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.title {
+    letter-spacing: 0.1rem;
+    font-weight: 600;
+    font-size: 2.3rem;
+}
+
+@keyframes slide-in{
+  from {top:0;right:-400px;}
+  to {top:0;right:0;}
+}
+
+.col-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    background-color: #00ad85;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-name: slide-in;
+    animation-duration: 0.8s;
+}
+
+@keyframes fade-in {
+    from {opacity:0;}
+    to {opacity:1;}  
+}
+
+.col-right .content {
+    margin: 0 200px;
+    color: white;
+    width: 100%;
+    animation-name: fade-in;
+    animation-duration: 2.2s;
+    animation-timing-function: ease-in;
+     background-color: red; 
+}
+
+/* .img-wrapper {
+    position: relative;
+    bottom: 10;
+    right: auto;
+    left: auto;
+} 
+
+.illustration {
+    position: absolute;
+    height: 400px;
+}
+
+input {
+    border-radius: 8px !important;
+}
+
+label {
+    letter-spacing: 0.1rem;
+    color: #a1a1a1;
+    font-size: 16px;
+    font-weight: 600;
+} */
+
