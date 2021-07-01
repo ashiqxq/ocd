@@ -32,8 +32,8 @@ def runCode(request):
         with open("codes.txt", "w") as cf, open("inputs.txt", "w") as snp:
             cf.write(source)
             snp.write(inp)
-        file_ext = {"CPP": "cpp", "C": "c", "PYTHON": "py", "JAVA": "java"}
-        run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac"}
+        file_ext = {"CPP": "cpp", "C": "c", "PYTHON": "py", "JAVA": "java", "JAVASCRIPT": "js"}
+        run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac", "JAVASCRIPT": "node"}
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
         if lang == "C" or lang == "CPP":
@@ -75,6 +75,25 @@ def runCode(request):
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
                     ["python", f"{codefile}.{file_ext[lang]}"],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "JAVASCRIPT":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
                     stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
