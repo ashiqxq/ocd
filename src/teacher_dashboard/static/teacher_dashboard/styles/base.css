@@ -153,21 +153,3 @@ a{
 
 
 
-.empty-course-card:hover {
-    cursor: pointer;
-    filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
-}
-
-.course-card:hover {
-    cursor: pointer;
-    filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2));
-}
-
-
-.card-options{
-    display: none;
-    position: absolute;
-    padding: 16px;
-    right: 0px;
-}
-

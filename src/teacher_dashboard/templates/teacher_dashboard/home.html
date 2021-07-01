@@ -152,13 +152,13 @@
 </div>
 
 <div class="container">
-  <div class="row row-cols-1 row-cols-md-3 g-4" style="margin: -24px">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     {% if courses %} {% for course in courses %}
     <div class="col course-card">
       <div class="card">
         <div class="card-body">
           <div class="card-title row">
-            <div class="col-7">
+            <div class="col-6">
               <a href="{% url 'tCourseView' %}?course_id={{course.course_id}}">
                 <h3>{{course.course_name}}</h3>
               </a>
@@ -166,13 +166,23 @@
             <div class="col-4">
               <h5>{{course.course_id}}</h5>
             </div>
-            <div class="col-1 pe-2">
+            <div class="col-1">
+              <div
+                class="card-option"
+                id="card-option"
+                onclick="moreOptions('{{course.course_id}}')"
+              >
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+              </div>
+
+              {% comment %}
               <img
                 class="card-option"
                 id="card-option"
                 onclick="moreOptions('{{course.course_id}}')"
                 src="https://img.icons8.com/ios-glyphs/20/000000/menu-2.png"
               />
+              {% endcomment %}
               <div class="card-options card-id-{{course.course_id}}">
                 <ul class="list-group">
                   <a
@@ -191,13 +201,20 @@
                 </ul>
               </div>
             </div>
+            {% comment %}
+            <div class="col-1"></div>
+            {% endcomment %}
           </div>
           <p class="card-text">{{course.course_desc}}</p>
         </div>
         <div class="card-footer fst-italic d-flex justify-content-between">
-            {% comment %} <h4> Course : {{course.teacher_id.first_name}} {{course.teacher_id.last_name}}</h4> {% endcomment %}
-
-          Enrollment Code: <span>{{course.enrollment_code}}</span>
+          {% comment %}
+          <h4>
+            Course : {{course.teacher_id.first_name}}
+            {{course.teacher_id.last_name}}
+          </h4>
+          {% endcomment %} Enrollment Code:
+          <span>{{course.enrollment_code}}</span>
         </div>
       </div>
     </div>
@@ -220,7 +237,7 @@
               h-100
             "
           >
-           <i
+            <i
               class="fa fa-plus-circle"
               style="font-size: 60px; color: #b4b4b4"
               aria-hidden="true"
@@ -232,7 +249,6 @@
     </div>
   </div>
 </div>
-
 
 <script type="text/javascript">
   function moreOptions(courseID) {

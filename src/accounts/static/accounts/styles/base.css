@@ -97,12 +97,10 @@ nav{
 .green-outline-btn {
     color: #00C898;
     padding: 4px 12px !important;
-
     border: 2px #00C898 solid;
     font-weight: 500 !important;
     font-size: 1.2rem;
     border-radius: 8px;
-    margin-left: 26px;
 }
 
 .green-outline-btn:hover {
