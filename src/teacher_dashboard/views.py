@@ -66,7 +66,6 @@ def handleCreateCourse(request):
     return redirect("teacher_dashboard")
 
 
-@login_required(login_url='/accounts/login?type=student')
 def getCourses(teacherID):
     all_courses = course_list.objects.all().filter(teacher_id_id=teacherID)
     return all_courses
@@ -215,6 +214,7 @@ def handle_new_post(request, course_id, assignment_slug=None):
 def viewAssignment(request, course_id, assignment_slug):
     course = course_list.objects.get(course_id=course_id)
     assignment = student_assignments.objects.get(slug=assignment_slug)
+    print(assignment.assignment_id)
     all_submission_det = submission.objects.filter(
         assignment_id=assignment.assignment_id
     )
