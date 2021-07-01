@@ -18,6 +18,12 @@ def runCode(request):
         source = request.POST["source"]
         lang = request.POST["lang"]
         print(lang)
+        if lang == "JAVA":
+            _, _, after_keyword = source.split("public static void main")[0].partition("class")
+            class_name = after_keyword.split(" ")[1]
+            codefile = class_name
+        else:
+            codefile = "main"
         inp = ""
         output = ""
         otp_html = ""
@@ -26,14 +32,8 @@ def runCode(request):
         with open("codes.txt", "w") as cf, open("inputs.txt", "w") as snp:
             cf.write(source)
             snp.write(inp)
-        codefile = "main"
-        file_ext = {"CPP": "cpp", "C": "c", "PYTHON": "py"}
-        run_cmd = {"CPP": "g++", "C": "gcc"}
-        run_dict = {
-            "CPP": [f"{codefile}"],
-            "C": [f"{codefile}"],
-            "PYTHON": ["python", f"{codefile}.{file_ext[lang]}"],
-        }
+        file_ext = {"CPP": "cpp", "C": "c", "PYTHON": "py", "JAVA": "java"}
+        run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac"}
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
         if lang == "C" or lang == "CPP":
@@ -86,6 +86,41 @@ def runCode(request):
                 error = proc.stderr
                 if error == "":
                     outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "JAVA":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        f"{codefile}.{file_ext[lang]}",
+                        # "-o",
+                        # f"{codefile}",
+                    ],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                error = proc.stderr
+                if error == "":
+                    proc = subprocess.run(
+                        ["java", f"{class_name}"],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    subprocess.run(["rm", f"{codefile}.class"])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == "":
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
                 else:
                     outpt.write(error)
                 outpt.close()
