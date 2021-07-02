@@ -18,7 +18,8 @@ def index(request):
     us = 0
     if request.user.is_authenticated:
         un = request.user.username
-        us = all_users.objects.filter(username=un).values("user_type")
+        us = all_users.objects.filter(username=un).values("user_type")[0]["user_type"]
+        print(us)
         if us:
             return redirect("teacher_dashboard")
         else:

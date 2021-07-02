@@ -39,7 +39,7 @@ def enrollCourse(request):
         student = student_user.objects.get(username=username)
         bridge = student_course_bridge(course_id=course, student_id=student)
         bridge.save()
-    return redirect("shome")
+    return redirect("student_dashboard")
 
 
 @login_required(login_url='/accounts/login?type=student')

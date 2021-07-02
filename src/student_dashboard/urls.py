@@ -4,7 +4,7 @@ from django.urls import path, re_path
 
 urlpatterns = [
     path("", views.index, name="student_dashboard"),
-    path("", views.index, name="shome"),
+    path("", views.index, name="home"),
     path("enrollCourse/", views.enrollCourse, name="enrollCourse"),
     re_path(
         r"^courses(?:course_id=(?P<course_id>\d+)/)?$",
