@@ -80,11 +80,11 @@ WSGI_APPLICATION = "src.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env('DATABASE_NAME'),
-        "USER": env('DATABASE_USER'),
-        "PASSWORD": env('DATABASE_PASSWORD'),
-        "HOST": env('DATABASE_HOST'),
-        "PORT": env('DATABASE_PORT')
+        "NAME": os.getenv('DATABASE_NAME'),
+        "USER": os.getenv('DATABASE_USER'),
+        "PASSWORD": os.getenv('DATABASE_PASSWORD'),
+        "HOST": os.getenv('DATABASE_HOST'),
+        "PORT": os.getenv('DATABASE_PORT')
     }
 }
 
@@ -134,7 +134,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = "/static/"
-# STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "static_root")
+STATIC_ROOT = "/home/static/"
+# STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "static")
+print(STATIC_ROOT)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "media_root")
