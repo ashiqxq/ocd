@@ -82,7 +82,7 @@ def runCode(request):
         elif lang == "PYTHON":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
-                    ["python", f"{codefile}.{file_ext[lang]}"],
+                    ["python3", f"{codefile}.{file_ext[lang]}"],
                     stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
