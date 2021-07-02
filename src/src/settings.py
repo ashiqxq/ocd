@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "student_dashboard",
     "django_seed",
     "ckeditor",
+    "src"
 ]
 
 MIDDLEWARE = [
