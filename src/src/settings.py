@@ -1,5 +1,3 @@
-
-
 import os
 import environ
 
@@ -21,9 +19,9 @@ MEDIA_DIR = os.path.join(BASE_DIR, "media")
 SECRET_KEY = "8kaf%_uz=nl!&mhx_p=jpw1s09-e7sq&sd*p9_g&9!y!6##%)p"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 # CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
@@ -41,7 +39,7 @@ INSTALLED_APPS = [
     "student_dashboard",
     "django_seed",
     "ckeditor",
-    "src"
+    "src",
 ]
 
 MIDDLEWARE = [
@@ -81,11 +79,11 @@ WSGI_APPLICATION = "src.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv('DATABASE_NAME'),
-        "USER": os.getenv('DATABASE_USER'),
-        "PASSWORD": os.getenv('DATABASE_PASSWORD'),
-        "HOST": os.getenv('DATABASE_HOST'),
-        "PORT": os.getenv('DATABASE_PORT')
+        "NAME": os.getenv("DATABASE_NAME"),
+        "USER": os.getenv("DATABASE_USER"),
+        "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+        "HOST": os.getenv("DATABASE_HOST"),
+        "PORT": os.getenv("DATABASE_PORT"),
     }
 }
 
@@ -135,8 +133,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = "/home/static/"
-# STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "static")
+# STATIC_ROOT = "/home/static/"
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 print(STATIC_ROOT)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "assets", "media_root")

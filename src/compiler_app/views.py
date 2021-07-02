@@ -19,7 +19,9 @@ def runCode(request):
         lang = request.POST["lang"]
         print(lang)
         if lang == "JAVA":
-            _, _, after_keyword = source.split("public static void main")[0].partition("class")
+            _, _, after_keyword = source.split("public static void main")[0].partition(
+                "class"
+            )
             class_name = after_keyword.split(" ")[1]
             codefile = class_name
         else:
@@ -32,7 +34,13 @@ def runCode(request):
         with open("codes.txt", "w") as cf, open("inputs.txt", "w") as snp:
             cf.write(source)
             snp.write(inp)
-        file_ext = {"CPP": "cpp", "C": "c", "PYTHON": "py", "JAVA": "java", "JAVASCRIPT": "js"}
+        file_ext = {
+            "CPP": "cpp",
+            "C": "c",
+            "PYTHON": "py",
+            "JAVA": "java",
+            "JAVASCRIPT": "js",
+        }
         run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac", "JAVASCRIPT": "node"}
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()

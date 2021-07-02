@@ -17,7 +17,7 @@ status_dict = {"draft": 0, "posted": 1, "submitted": 2, "overdue": 3, "discarded
 submission_status_dict = {"not_submitted": 0, "submitted": 1, "redo": 2}
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def index(request):
     username = request.user.username
     all_courses = course_list.objects.filter(
@@ -30,7 +30,7 @@ def index(request):
     return render(request, "student_dashboard/home.html", {"courses": all_courses})
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def enrollCourse(request):
     username = request.user.username
     if request.method == "POST":
@@ -42,7 +42,7 @@ def enrollCourse(request):
     return redirect("student_dashboard")
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def courseView(request):
     courseID = request.GET.get("course_id")
     course = course_list.objects.get(course_id=courseID)
@@ -57,7 +57,7 @@ def courseView(request):
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def viewAssignment(request, course_id, assignment_slug):
     course = course_list.objects.get(course_id=course_id)
     assignment = student_assignments.objects.get(slug=assignment_slug)
@@ -74,7 +74,7 @@ def viewAssignment(request, course_id, assignment_slug):
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def NewSubmission(request):
     if request.is_ajax():
         source = request.POST["source"]
@@ -129,7 +129,7 @@ def NewSubmission(request):
 
 
 # Create your views here.
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def PostListViewStudent(request):
     username = request.user.username
     all_assignments = (
@@ -150,7 +150,7 @@ def PostListViewStudent(request):
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def PostDetailView(request, pk):
     assignment_det = student_assignments.objects.get(assignment_id=pk)
     return render(

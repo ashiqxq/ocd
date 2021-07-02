@@ -24,7 +24,7 @@ def index(request):
             return redirect("teacher_dashboard")
         else:
             return redirect("student_dashboard")
-    return render(request, "accounts/index.html", {"teacher":us })
+    return render(request, "accounts/index.html", {"teacher": us})
 
 
 def handleSignUp(request):
