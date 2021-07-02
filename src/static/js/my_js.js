@@ -20,7 +20,7 @@ $(document).ready(function () {
   language["JAVA"] =
     'class TestClass {\n    public static void main(String args[] ) throws Exception {\n        System.out.println("Hello World!");\n    }\n}\n';
   language["JAVASCRIPT"] =
-    "importPackage(java.io);\nimportPackage(java.lang);\n\nprint ('Hello World!\\n');\n";
+    "console.log('Hello World!\\n');\n";
   language["LISP"] = '(display "Hello World!")\n';
   language["OBJECTIVEC"] =
     '#import <Foundation/Foundation.h>\nint main(int argc, const char* argv[]){\n    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];\n    printf("Hello World");\n    [pool drain];\n    return 0;\n}\n';

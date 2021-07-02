@@ -7,66 +7,148 @@ import shutil, subprocess
 
 # Create your views here.
 RUN_URL = "https://api.hackerearth.com/v3/code/run/"
+
+
 def index(request):
-    return render(request, 'compiler_app/ide.html', {})
+    return render(request, "compiler_app/ide.html", {})
 
 
 def runCode(request):
     if request.is_ajax():
-        source = request.POST['source']
-        lang = request.POST['lang']
+        source = request.POST["source"]
+        lang = request.POST["lang"]
         print(lang)
+        if lang == "JAVA":
+            _, _, after_keyword = source.split("public static void main")[0].partition("class")
+            class_name = after_keyword.split(" ")[1]
+            codefile = class_name
+        else:
+            codefile = "main"
         inp = ""
         output = ""
         otp_html = ""
-        if 'input' in request.POST:
-            inp = request.POST['input']
-        with open('codes.txt', 'w') as cf, open('inputs.txt', 'w') as snp:
+        if "input" in request.POST:
+            inp = request.POST["input"]
+        with open("codes.txt", "w") as cf, open("inputs.txt", "w") as snp:
             cf.write(source)
             snp.write(inp)
-        codefile = 'main'
-        file_ext = {'CPP': 'cpp', 'C': 'c', 'PYTHON': 'py'}
-        run_cmd = {'CPP': 'g++', 'C': 'gcc'}
-        run_dict = {'CPP': [f'{codefile}'], 'C': [f'{codefile}'], 'PYTHON': ['python', f'{codefile}.{file_ext[lang]}']}
-        shutil.copyfile('codes.txt', f'{codefile}.{file_ext[lang]}')
-        open('codes.txt', 'w').close()
-        if lang == 'C' or lang=='CPP':
-            with open('inputs.txt', 'r') as inpt, open('outputs.txt', 'w') as outpt:
-                proc = subprocess.run([run_cmd[lang], f'{codefile}.{file_ext[lang]}', '-o', f'{codefile}'], stdin=inpt, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                subprocess.run(['rm', f'{codefile}.{file_ext[lang]}'])
+        file_ext = {"CPP": "cpp", "C": "c", "PYTHON": "py", "JAVA": "java", "JAVASCRIPT": "js"}
+        run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac", "JAVASCRIPT": "node"}
+        shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
+        open("codes.txt", "w").close()
+        if lang == "C" or lang == "CPP":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        f"{codefile}.{file_ext[lang]}",
+                        "-o",
+                        f"{codefile}",
+                    ],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
                 inpt.close()
                 error = proc.stderr
-                if error == '':
-                    proc = subprocess.run([f'./{codefile}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                    subprocess.run(['rm', f'{codefile}'])
+                if error == "":
+                    proc = subprocess.run(
+                        [f"./{codefile}"],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    subprocess.run(["rm", f"{codefile}"])
                     output = proc.stdout
                     error = proc.stderr
-                    if error == '':
+                    if error == "":
                         outpt.write(output)
                     else:
                         outpt.write(error)
                 else:
                     outpt.write(error)
                 outpt.close()
-            subprocess.run(['rm', 'inputs.txt'])
-        elif lang == 'PYTHON':
-            with open('inputs.txt', 'r') as inpt, open('outputs.txt', 'w') as outpt:
-                proc = subprocess.run(['python', f'{codefile}.{file_ext[lang]}'], stdin=inpt, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-                subprocess.run(['rm', f'{codefile}.{file_ext[lang]}'])
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "PYTHON":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    ["python", f"{codefile}.{file_ext[lang]}"],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
                 inpt.close()
                 output = proc.stdout
                 error = proc.stderr
-                if error == '':
+                if error == "":
                     outpt.write(output)
                 else:
                     outpt.write(error)
                 outpt.close()
-            subprocess.run(['rm', 'inputs.txt'])
-        with open('outputs.txt', 'r') as f:
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "JAVASCRIPT":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "JAVA":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        f"{codefile}.{file_ext[lang]}",
+                        # "-o",
+                        # f"{codefile}",
+                    ],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                error = proc.stderr
+                if error == "":
+                    proc = subprocess.run(
+                        ["java", f"{class_name}"],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    subprocess.run(["rm", f"{codefile}.class"])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == "":
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        with open("outputs.txt", "r") as f:
             output = f.read()
-            otp_html = "<pre>"+output+"</pre>"
+            otp_html = "<pre>" + output + "</pre>"
             f.close()
-        subprocess.run(['rm', 'outputs.txt'])
+        subprocess.run(["rm", "outputs.txt"])
         res = {
             "run_status": {
                 "memory_used": "2744",
@@ -82,11 +164,11 @@ def runCode(request):
                 "output": "Hello world\n",
                 "async": 0,
                 "request_NOT_OK_reason": "",
-                "request_OK": "True"
+                "request_OK": "True",
             },
             "compile_status": "OK",
-            "code_id": "42bb58K"
-            }
+            "code_id": "42bb58K",
+        }
         res["run_status"]["output_html"] = otp_html
         res["run_status"]["output"] = output
         return JsonResponse(res, safe=False)

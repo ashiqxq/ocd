@@ -55,13 +55,14 @@ class student_course_bridge(models.Model):
     student_id = models.ForeignKey(student_user, on_delete=models.CASCADE)
 
 
-
 class submission(models.Model):
     submission_id = models.AutoField(primary_key=True)
-    assignment_id = models.ForeignKey(student_assignments, null = True, on_delete=models.SET_NULL)
+    assignment_id = models.ForeignKey(
+        student_assignments, null=True, on_delete=models.SET_NULL
+    )
     student_id = models.ForeignKey(student_user, null=True, on_delete=models.SET_NULL)
     submission_date = models.DateTimeField(default=datetime.now())
     submission_status = models.IntegerField()
     submission_code = models.TextField(blank=True, null=True)
     submission_lang = models.CharField(max_length=150, blank=True, null=True)
-    #submission_status_dict::{'not_submitted': 0, 'submitted':1, 'redo':2}
+    # submission_status_dict::{'not_submitted': 0, 'submitted':1, 'redo':2}

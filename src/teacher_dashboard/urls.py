@@ -6,7 +6,7 @@ urlpatterns = [
     path("create_course/", views.handleCreateCourse, name="createCourse"),
     path("delete_course/", views.deleteCourses, name="deleteCourse"),
     path("edit_course/", views.editCourses, name="editCourse"),
-    path('submission/<int:pk>', views.SubmissionDetailView, name='submission_detail'),
+    path("submission/<int:pk>", views.SubmissionDetailView, name="submission_detail"),
     path(
         "courses",
         views.courseView,

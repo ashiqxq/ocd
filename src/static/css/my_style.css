@@ -13,23 +13,6 @@ hr {
     border-width: 2px;
 }
 
-.container{
-	width:70%;
-}
-
-.navbar{
-
-	background-color: #003366;
-}
-.nav.navbar-nav.navbar-right li a {
-    color: #fff;
-    font-weight: 700;
-}
-
-.row{
-	margin-left: 0.3%;
-	margin-right: 0.3%;
-}
 #topbar {
 	margin: 0;
 	padding: 1%;

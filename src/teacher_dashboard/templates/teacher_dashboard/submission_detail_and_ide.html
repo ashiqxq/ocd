@@ -10,6 +10,7 @@
   href="{% static 'prism/prism.css' %}"
 />
 {% endblock style %} {% block content %}
+<div class="container">
   <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
   <h2 id="id_passer" data-pk={{assignment.assignment_id}}>{{assignment.assignment_name}}</h2>
   <div class="row">
@@ -69,7 +70,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <script type="text/javascript">
     html = $.parseHTML("{{assignment.assignment_body}}");
     var $assignmentBody = $("#assignment_body");

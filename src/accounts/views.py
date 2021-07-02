@@ -15,6 +15,7 @@ import random
 
 # Create your views here.
 def index(request):
+    us = 0
     if request.user.is_authenticated:
         un = request.user.username
         us = all_users.objects.filter(username=un).values("user_type")
@@ -22,7 +23,7 @@ def index(request):
             return redirect("teacher_dashboard")
         else:
             return redirect("student_dashboard")
-    return render(request, "accounts/index.html")
+    return render(request, "accounts/index.html", {"teacher":us })
 
 
 def handleSignUp(request):
