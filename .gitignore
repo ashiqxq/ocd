@@ -62,4 +62,4 @@ target/
 src/db.sqlite3
 src/src/.env
 .env
-assets/
+static/
