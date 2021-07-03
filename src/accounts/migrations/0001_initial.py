@@ -9,80 +9,143 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='all_users',
+            name="all_users",
             fields=[
-                ('username', models.CharField(max_length=100, primary_key=True, serialize=False)),
-                ('user_type', models.BooleanField(default=False)),
+                (
+                    "username",
+                    models.CharField(max_length=100, primary_key=True, serialize=False),
+                ),
+                ("user_type", models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
-            name='course_list',
+            name="course_list",
             fields=[
-                ('course_id', models.CharField(max_length=100, primary_key=True, serialize=False)),
-                ('course_name', models.CharField(max_length=200, null=True)),
-                ('course_desc', models.CharField(max_length=500, null=True)),
-                ('enrollment_code', models.CharField(default='000000', max_length=6)),
+                (
+                    "course_id",
+                    models.CharField(max_length=100, primary_key=True, serialize=False),
+                ),
+                ("course_name", models.CharField(max_length=200, null=True)),
+                ("course_desc", models.CharField(max_length=500, null=True)),
+                ("enrollment_code", models.CharField(default="000000", max_length=6)),
             ],
         ),
         migrations.CreateModel(
-            name='student_assignments',
+            name="student_assignments",
             fields=[
-                ('assignment_id', models.AutoField(primary_key=True, serialize=False)),
-                ('assignment_name', models.TextField(null=True)),
-                ('assignment_body', models.TextField(null=True)),
-                ('published_date', models.DateTimeField(default=datetime.datetime.now)),
-                ('due_date', models.DateTimeField()),
-                ('status', models.IntegerField()),
-                ('slug', models.SlugField(null=True, unique=True)),
-                ('course_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.course_list')),
+                ("assignment_id", models.AutoField(primary_key=True, serialize=False)),
+                ("assignment_name", models.TextField(null=True)),
+                ("assignment_body", models.TextField(null=True)),
+                ("published_date", models.DateTimeField(default=datetime.datetime.now)),
+                ("due_date", models.DateTimeField()),
+                ("status", models.IntegerField()),
+                ("slug", models.SlugField(null=True, unique=True)),
+                (
+                    "course_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="accounts.course_list",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='student_user',
+            name="student_user",
             fields=[
-                ('username', models.CharField(max_length=100, primary_key=True, serialize=False)),
-                ('email', models.EmailField(max_length=200)),
-                ('first_name', models.CharField(max_length=100)),
-                ('last_name', models.CharField(max_length=100)),
+                (
+                    "username",
+                    models.CharField(max_length=100, primary_key=True, serialize=False),
+                ),
+                ("email", models.EmailField(max_length=200)),
+                ("first_name", models.CharField(max_length=100)),
+                ("last_name", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='teacher_user',
+            name="teacher_user",
             fields=[
-                ('username', models.CharField(max_length=100, primary_key=True, serialize=False)),
-                ('email', models.EmailField(max_length=200)),
-                ('first_name', models.CharField(max_length=100)),
-                ('last_name', models.CharField(max_length=100)),
+                (
+                    "username",
+                    models.CharField(max_length=100, primary_key=True, serialize=False),
+                ),
+                ("email", models.EmailField(max_length=200)),
+                ("first_name", models.CharField(max_length=100)),
+                ("last_name", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='submission',
+            name="submission",
             fields=[
-                ('submission_id', models.AutoField(primary_key=True, serialize=False)),
-                ('submission_date', models.DateTimeField(default=datetime.datetime(2021, 7, 2, 16, 11, 30, 834567))),
-                ('submission_status', models.IntegerField()),
-                ('submission_code', models.TextField(blank=True, null=True)),
-                ('submission_lang', models.CharField(blank=True, max_length=150, null=True)),
-                ('assignment_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='accounts.student_assignments')),
-                ('student_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='accounts.student_user')),
+                ("submission_id", models.AutoField(primary_key=True, serialize=False)),
+                (
+                    "submission_date",
+                    models.DateTimeField(
+                        default=datetime.datetime(2021, 7, 2, 16, 11, 30, 834567)
+                    ),
+                ),
+                ("submission_status", models.IntegerField()),
+                ("submission_code", models.TextField(blank=True, null=True)),
+                (
+                    "submission_lang",
+                    models.CharField(blank=True, max_length=150, null=True),
+                ),
+                (
+                    "assignment_id",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="accounts.student_assignments",
+                    ),
+                ),
+                (
+                    "student_id",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="accounts.student_user",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='student_course_bridge',
+            name="student_course_bridge",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('course_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.course_list')),
-                ('student_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='accounts.student_user')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "course_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="accounts.course_list",
+                    ),
+                ),
+                (
+                    "student_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="accounts.student_user",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='course_list',
-            name='teacher_id',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='accounts.teacher_user'),
+            model_name="course_list",
+            name="teacher_id",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="accounts.teacher_user",
+            ),
         ),
     ]

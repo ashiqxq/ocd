@@ -1,5 +1,3 @@
-
-
 import os
 import environ
 
@@ -23,7 +21,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get("DEBUG")))
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 # CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
@@ -41,7 +39,7 @@ INSTALLED_APPS = [
     "student_dashboard",
     "django_seed",
     "ckeditor",
-    "src"
+    "src",
 ]
 
 MIDDLEWARE = [
@@ -135,6 +133,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+# STATIC_ROOT = "/home/static/"
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 print(STATIC_ROOT)
 MEDIA_URL = "/media/"
