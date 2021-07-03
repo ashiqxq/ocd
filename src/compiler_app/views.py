@@ -17,7 +17,6 @@ def runCode(request):
     if request.is_ajax():
         source = request.POST["source"]
         lang = request.POST["lang"]
-        print(lang)
         if lang == "JAVA":
             _, _, after_keyword = source.split("public static void main")[0].partition(
                 "class"

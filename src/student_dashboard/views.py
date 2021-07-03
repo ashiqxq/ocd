@@ -65,8 +65,6 @@ def viewAssignment(request, course_id, assignment_slug):
     submissions = submission.objects.filter(
         assignment_id_id=assignment.assignment_id, student_id_id=username
     )
-    print(username)
-    print(submissions)
     return render(
         request,
         "student_dashboard/assignment_detail_and_ide.html",
@@ -100,7 +98,6 @@ def NewSubmission(request):
                 submission_code=source,
             )
             new_submission.save()
-        print("successfully submitted")
         res = {
             "run_status": {
                 "memory_used": "2744",

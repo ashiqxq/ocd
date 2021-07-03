@@ -137,7 +137,6 @@ def PostListView(request):
 
 @login_required(login_url="/accounts/login?type=student")
 def DraftListView(request):
-    print("visited")
     username = request.user.username
     all_drafts = (
         student_assignments.objects.filter(status=status_dict["draft"])
@@ -178,7 +177,6 @@ def handle_new_post(request, course_id, assignment_slug=None):
         due_date = request.POST["date"].split(" ")[0]
         due_time = request.POST["time"]
         assignment_due = parser.parse(f"{due_date} {due_time}:00", tzinfos=tzinfos)
-        print(assignment_detail)
         if "save" in request.POST:
             new_assignment = student_assignments(
                 course_id_id=course_id,
@@ -189,7 +187,7 @@ def handle_new_post(request, course_id, assignment_slug=None):
                 status=status_dict["draft"],
             )
             new_assignment.save()
-            return redirect("home")
+            return redirect("teacher_dashboard")
         elif "publish" in request.POST:
             new_assignment = student_assignments(
                 course_id_id=course_id,
@@ -200,14 +198,14 @@ def handle_new_post(request, course_id, assignment_slug=None):
                 status=status_dict["posted"],
             )
             new_assignment.save()
-            return redirect("home")
+            return redirect("teacher_dashboard")
         elif "edit" in request.POST:
             assignment = student_assignments.objects.get(slug=assignment_slug)
             assignment.assignment_name = assignment_name
             assignment.assignment_body = assignment_detail
             assignment.due_date = assignment_due
             assignment.save()
-            return redirect("home")
+            return redirect("teacher_dashboard")
     return HttpResponse("hello")
 
 
@@ -215,11 +213,9 @@ def handle_new_post(request, course_id, assignment_slug=None):
 def viewAssignment(request, course_id, assignment_slug):
     course = course_list.objects.get(course_id=course_id)
     assignment = student_assignments.objects.get(slug=assignment_slug)
-    print(assignment.assignment_id)
     all_submission_det = submission.objects.filter(
         assignment_id=assignment.assignment_id
     )
-    print(all_submission_det)
     return render(
         request,
         "teacher_dashboard/assignment_view.html",
