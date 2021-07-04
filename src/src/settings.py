@@ -1,4 +1,9 @@
 import os
+import environ
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,10 +15,10 @@ MEDIA_DIR = os.path.join(BASE_DIR, "media")
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get("DEBUG")))
+DEBUG = bool(int(env("DEBUG")))
 
 ALLOWED_HOSTS = ["*"]
 # CORS_ORIGIN_ALLOW_ALL = True
@@ -73,11 +78,11 @@ WSGI_APPLICATION = "src.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get('DATABASE_NAME'),
-        "USER": os.environ.get('DATABASE_USER'),
-        "PASSWORD": os.environ.get('DATABASE_PASSWORD'),
-        "HOST": os.environ.get('DATABASE_HOST'),
-        "PORT": os.environ.get('DATABASE_PORT')
+        "NAME": env('DATABASE_NAME'),
+        "USER": env('DATABASE_USER'),
+        "PASSWORD": env('DATABASE_PASSWORD'),
+        "HOST": env('DATABASE_HOST'),
+        "PORT": env('DATABASE_PORT')
     }
 }
 

@@ -23,6 +23,8 @@ def runCode(request):
             )
             class_name = after_keyword.split(" ")[1]
             codefile = class_name
+        # elif lang == "CSHARP":
+        #     pass
         else:
             codefile = "main"
         inp = ""
@@ -39,8 +41,9 @@ def runCode(request):
             "PYTHON": "py",
             "JAVA": "java",
             "JAVASCRIPT": "js",
+            "CSHARP": "cs"
         }
-        run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac", "JAVASCRIPT": "node"}
+        run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac", "JAVASCRIPT": "node", "CSHARP": "mcs"}
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
         subprocess.run(["sudo", "rm", "codes.txt"])
@@ -69,6 +72,39 @@ def runCode(request):
                         text=True,
                     )
                     subprocess.run(["sudo", "rm", f"{codefile}"])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == "":
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["sudo", "rm", "inputs.txt"])
+        elif lang == "CSHARP":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        f"{codefile}.{file_ext[lang]}",
+                    ],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                error = proc.stderr
+                if error == "":
+                    proc = subprocess.run(
+                        ["mono", f"{codefile}.exe"],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    subprocess.run(["sudo", "rm", f"{codefile}.exe"])
                     output = proc.stdout
                     error = proc.stderr
                     if error == "":

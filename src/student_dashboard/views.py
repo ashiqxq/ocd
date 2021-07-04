@@ -36,6 +36,7 @@ def enrollCourse(request):
     if request.method == "POST":
         enroll_code = request.POST["enroll_code"]
         course = course_list.objects.get(enrollment_code=enroll_code)
+        print(course)
         student = student_user.objects.get(username=username)
         bridge = student_course_bridge(course_id=course, student_id=student)
         bridge.save()

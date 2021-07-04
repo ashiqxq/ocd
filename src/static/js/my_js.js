@@ -12,7 +12,7 @@ $(document).ready(function () {
   language["CLOJURE"] = '(println "Hello World!")';
   language["CSS"] = "p {\n font-size: 18px; \n}\n";
   language["CSHARP"] =
-    'using System;\nusing System.Numerics;\nclass Test {\n	static void Main(string[] args)	{\n	   /*\n		* \n		Read input from stdin and provide input before running\n		var line1 = System.Console.ReadLine().Trim();\n		var N = Int32.Parse(line1);\n		for (var i = 0; i < N; i++) {\n		System.Console.WriteLine("hello world");\n		}\n		*/\n\n		System.Console.WriteLine("Hello World!\\n");\n	}\n}\n';
+    'using System;\n\nnamespace HelloWorldApp {\n\nclass Hello {\n    static void Main(string[] args)\n    {\n\n        Console.WriteLine("Hello World!");\n    }\n}\n}';
   language["GO"] =
     'package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello World")\n}\n';
   language["HASKELL"] =

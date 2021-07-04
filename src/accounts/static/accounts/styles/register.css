@@ -65,6 +65,7 @@
     align-items: center;
     animation-name: slide-in;
     animation-duration: 0.8s;
+    animation-timing-function: ease-in;
 }
 
 @keyframes fade-in {
