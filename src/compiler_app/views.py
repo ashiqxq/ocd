@@ -40,6 +40,7 @@ def runCode(request):
             "JAVA": "java",
             "JAVASCRIPT": "js",
             "CSHARP": "cs",
+            "GO": "go"
         }
         run_cmd = {
             "CPP": "g++",
@@ -47,6 +48,7 @@ def runCode(request):
             "JAVA": "javac",
             "JAVASCRIPT": "node",
             "CSHARP": "mcs",
+            "GO": "go"
         }
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
@@ -193,6 +195,46 @@ def runCode(request):
                     outpt.write(error)
                 outpt.close()
             subprocess.run(["rm", "inputs.txt"])
+        elif lang == "GO":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        "build",
+                        "-o",
+                        f"{codefile}",
+                        f"{codefile}.{file_ext[lang]}",
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                # print(proc.stderr, proc.stdout)
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                error = proc.stderr
+                if error == "":
+                    proc = subprocess.run(
+                        [f"./{codefile}"],
+                        stdin=inpt,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    inpt.close()
+                    subprocess.run(["rm", f"{codefile}"])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == "":
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+            # subprocess.run(["mkdir", "temp"])
+            # subprocess.run(["mv", f"{codefile}.{file_ext[lang]}", "temp/"])
+
         with open("outputs.txt", "r") as f:
             output = f.read()
             otp_html = "<pre>" + output + "</pre>"
