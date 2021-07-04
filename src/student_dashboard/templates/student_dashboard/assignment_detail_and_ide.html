@@ -51,19 +51,19 @@
       </div>
       <br />
       {% if submission %}
-      <div
-        class=""
-        style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
-      >
-      <pre>
-      <code class="language-{{submission.0.submission_lang}}">
-      
-      {{submission.0.submission_code}}
-      </code>
-      </pre>
-      </div>
+        <div
+          class=""
+          style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
+        >
+        <pre>
+        <code class="language-{{submission.submission_lang}}">
+        
+        {{submission.submission_code}}
+        </code>
+        </pre>
+        </div>
 
-{% else %}
+      {% else %}
       <div
         class=""
         style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
@@ -202,7 +202,7 @@
           </div>
         </div>
       </div>
-{% endif %}
+      {% endif %}
 
     </div>
     <div class="col-lg-4  col-md-12">
@@ -218,7 +218,7 @@
         {% if submission %}
         <div class="d-flex justify-content-between">
           <p>Submitted date:</p>
-          <p>{{ submission.0.submission_date|date:"H:m d M Y"  }}</p>
+          <p>{{ submission.submission_date|date:"H:m d M Y"  }}</p>
         </div>
         {% endif %}
         <hr />
@@ -241,6 +241,27 @@
           <p>Email:</p>
           <p>{{assignment.course_id.teacher_id.email}}</p>
         </div>
+        {% if submission %}
+        <hr />
+        <div class="">
+        <h4>Comments</h4>
+          <div class="mb-3 row">
+            <div class="col-11">
+              <input type="text" class="form-control" id="comment_body">
+            </div>
+            <button id="comment_btn" class="btn col-1 p-0">
+              <i class="fa fa-comment" aria-hidden="true"></i>
+            </button>
+          </div>
+          {% for comment in comments %}
+          <div class="mb-2">
+          <span class="text-muted">{{comment.author_id}}</span>
+          <br>
+          {{comment.comment}}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -254,6 +275,39 @@
     $assignmentBody.append(html[0].data);
   </script>
   <script src="{% static 'prism/prism.js' %}"></script>
+
+<script>
+function comment() {
+    $("#comment_btn").prop("disabled", true);
+
+    var token = $(":input[name='csrfmiddlewaretoken']").val();
+    var comment_msg = $("#comment_body").val();
+    var comment_body = {
+      msg: comment_msg,
+      csrfmiddlewaretoken: token,
+    };
+
+    $.ajax({
+      url: "../../comment/{{submission.submission_id}}",
+      type: "POST",
+      data: comment_body,
+      dataType: "json",
+      timeout: 1000000,
+      success: function (response) {
+        ongoing = false;
+        $("#comment_btn").prop("disabled", false);
+        $("#comment_body").val(null);
+        location.reload();
+      },
+    });
+  }
+
+$("#comment_btn").click(function () {
+    console.log('aa')
+    comment();
+  });
+</script>
+
 
   {% endblock content%}
 </body>

@@ -39,9 +39,15 @@ def runCode(request):
             "PYTHON": "py",
             "JAVA": "java",
             "JAVASCRIPT": "js",
-            "CSHARP": "cs"
+            "CSHARP": "cs",
         }
-        run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac", "JAVASCRIPT": "node", "CSHARP": "mcs"}
+        run_cmd = {
+            "CPP": "g++",
+            "C": "gcc",
+            "JAVA": "javac",
+            "JAVASCRIPT": "node",
+            "CSHARP": "mcs",
+        }
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
         subprocess.run(["sudo", "rm", "codes.txt"])

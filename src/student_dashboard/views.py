@@ -7,6 +7,7 @@ from accounts.models import (
     course_list,
     student_user,
     submission,
+    comments,
 )
 from django.db.models import Subquery
 from datetime import datetime
@@ -63,13 +64,17 @@ def viewAssignment(request, course_id, assignment_slug):
     course = course_list.objects.get(course_id=course_id)
     assignment = student_assignments.objects.get(slug=assignment_slug)
     username = request.user.username
-    submissions = submission.objects.filter(
+    submission_d = submission.objects.filter(
         assignment_id_id=assignment.assignment_id, student_id_id=username
-    )
+    )[0]
+    comments_det = None
+    if submission_d:
+        print(submission_d.submission_id)
+        comments_det = comments.objects.filter(post_id=submission_d.submission_id, author_id=username)
     return render(
         request,
         "student_dashboard/assignment_detail_and_ide.html",
-        {"course": course, "assignment": assignment, "submission": submissions},
+        {"course": course, "assignment": assignment, "submission": submission_d, "comments": comments_det},
     )
 
 
@@ -125,6 +130,23 @@ def NewSubmission(request):
     else:
         return HttpResponseForbidden()
 
+@login_required(login_url="/accounts/login?type=student")
+def comment(request, submission_id):
+    if request.is_ajax():
+        comment_msg = request.POST["msg"]
+        username = request.user.username
+        comment_obj = comments(
+            comment=comment_msg,
+            post_id=submission_id,
+            author_id=username,
+        )
+        comment_obj.save()
+        res = {
+            "posted": True
+        }
+        return JsonResponse(res, safe=False)
+    else:
+        return HttpResponseForbidden()
 
 # Create your views here.
 @login_required(login_url="/accounts/login?type=student")

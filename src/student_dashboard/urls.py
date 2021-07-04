@@ -16,6 +16,11 @@ urlpatterns = [
         views.viewAssignment,
         name="sviewAssignment",
     ),
+    path(
+        "comment/<slug:submission_id>",
+        views.comment,
+        name="scomment",
+    ),
     re_path(r"^run/$", viewsc.runCode, name="run"),
     re_path(r"^submit/$", views.NewSubmission, name="submit"),
     path("post/<int:pk>", views.PostDetailView, name="st_post_detail"),
