@@ -42,4 +42,9 @@ urlpatterns = [
         views.deleteAssignment,
         name="delete_assignment",
     ),
+    path(
+        "comment/<slug:submission_id>",
+        views.comment,
+        name="tcomment",
+    ),
 ]
