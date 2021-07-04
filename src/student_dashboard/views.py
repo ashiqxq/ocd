@@ -39,12 +39,12 @@ def enrollCourse(request):
         print(enroll_code,'*'*8)
         try:
             course = course_list.objects.filter(enrollment_code=enroll_code).first()
+            if course:
+                student = student_user.objects.get(username=username)
+                bridge = student_course_bridge(course_id=course, student_id=student)
+                bridge.save()
         except course_list.DoesNotExist:
             course=None
-        print(course,'*'*8)
-        student = student_user.objects.get(username=username)
-        bridge = student_course_bridge(course_id=course, student_id=student)
-        bridge.save()
     return redirect("student_dashboard")
 
 
