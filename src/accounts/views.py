@@ -18,12 +18,12 @@ def index(request):
     us = 0
     if request.user.is_authenticated:
         un = request.user.username
-        us = all_users.objects.filter(username=un).values("user_type")
+        us = all_users.objects.filter(username=un).values("user_type")[0]["user_type"]
         if us:
             return redirect("teacher_dashboard")
         else:
             return redirect("student_dashboard")
-    return render(request, "accounts/index.html", {"teacher":us })
+    return render(request, "accounts/index.html", {"teacher": us})
 
 
 def handleSignUp(request):
@@ -35,7 +35,6 @@ def handleSignUp(request):
         email = request.POST["email"]
         pass1 = request.POST["pass1"]
         pass2 = request.POST["pass2"]
-        print(pass1)
         myUser = User.objects.create_user(
             username=username,
             first_name=firstname,
@@ -71,7 +70,6 @@ def handleSignUp(request):
 
 def student_course_fake(request):
     users_list = User.objects.all()
-    print(type(users_list), type(users_list[0]))
     student_user = list(all_users.objects.filter(user_type=0).values("username"))
     student_list = [dc1["username"] for dc1 in student_user]
     cl1 = list(course_list.objects.exclude(teacher_id__isnull=True))
@@ -81,7 +79,6 @@ def student_course_fake(request):
         si = random.randrange(0, len(student_list))
         ci = random.randrange(0, len(cl1) - 1)
         key = "{} {}".format(si, ci)
-        print(student_list[si], cl[ci])
         if key not in dc:
             dc[key] = 1
             scbridge = student_course_bridge(

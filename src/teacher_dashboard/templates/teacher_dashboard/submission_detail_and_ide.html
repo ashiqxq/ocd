@@ -1,5 +1,8 @@
 {% extends 'teacher_dashboard/base.html' %} {% load static %} {% block style %}
-
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
 <link rel="stylesheet" type="text/css" href="{% static 'css/my_style.css' %}" />
 <link
   rel="stylesheet"
@@ -19,13 +22,17 @@
         <div id="assignment_body"><h3>Problem:</h3></div>
       </div>
       <br />
-
+<div
+        class=""
+        style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
+      >
       <pre>
       <code class="language-{{submission.submission_lang}}">
       
       {{submission.submission_code}}
       </code>
       </pre>
+    </div>
 
     </div>
     <div class="col-4">
@@ -48,7 +55,7 @@
           <p>{{assignment.course_id.course_name}}</p>
         </div>
         <hr />
-<div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between">
           <p>Submitted by:</p>
           <p>{{ submission.student_id_id }}</p>
         </div>
@@ -56,21 +63,60 @@
           <p>Submitted date:</p>
           <p>{{ submission.submission_date|date:"H:m d M Y"  }}</p>
         </div>
-        {% comment %} <div class="d-flex justify-content-between">
-          <p>Teacher:</p>
-          <p>
-            {{assignment.course_id.teacher_id.first_name}}
-            {{assignment.course_id.teacher_id.last_name}}
-          </p>
+        <hr />
+        <div class="">
+        <h4>Comments</h4>
+          <div class="mb-3 row">
+            <div class="col-11">
+              <input type="text" class="form-control" id="comment_body">
+            </div>
+            <button id="comment_btn" class="btn col-1 p-0">
+              <i class="fa fa-comment" aria-hidden="true"></i>
+            </button>
+          </div>
+          {% for comment in comments %}
+          <div class="mb-2">
+          <span class="text-muted">{{comment.author_id}}</span>
+          <br>
+          {{comment.comment}}
+          </div>
+          {% endfor %}
         </div>
-        <div class="d-flex justify-content-between">
-          <p>Email:</p>
-          <p>{{assignment.course_id.teacher_id.email}}</p>
-        </div> {% endcomment %}
       </div>
     </div>
   </div>
 </div>
+<script>
+    function comment() {
+        $("#comment_btn").prop("disabled", true);
+
+        var token = $(":input[name='csrfmiddlewaretoken']").val();
+        var comment_msg = $("#comment_body").val();
+        var comment_body = {
+          msg: comment_msg,
+          csrfmiddlewaretoken: token,
+        };
+
+        $.ajax({
+          url: "../comment/{{submission.submission_id}}",
+          type: "POST",
+          data: comment_body,
+          dataType: "json",
+          timeout: 1000000,
+          success: function (response) {
+            ongoing = false;
+            $("#comment_btn").prop("disabled", false);
+            $("#comment_body").val(null);
+            location.reload();
+          },
+        });
+      }
+
+    $("#comment_btn").click(function () {
+        console.log('aa')
+        comment();
+      });
+  </script>
   <script type="text/javascript">
     html = $.parseHTML("{{assignment.assignment_body}}");
     var $assignmentBody = $("#assignment_body");

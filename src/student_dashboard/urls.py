@@ -4,7 +4,7 @@ from django.urls import path, re_path
 
 urlpatterns = [
     path("", views.index, name="student_dashboard"),
-    # path("", views.index, name="home"),
+    path("", views.index, name="home"),
     path("enrollCourse/", views.enrollCourse, name="enrollCourse"),
     re_path(
         r"^courses(?:course_id=(?P<course_id>\d+)/)?$",
@@ -15,6 +15,11 @@ urlpatterns = [
         "courses/<str:course_id>/<slug:assignment_slug>",
         views.viewAssignment,
         name="sviewAssignment",
+    ),
+    path(
+        "comment/<slug:submission_id>",
+        views.comment,
+        name="scomment",
     ),
     re_path(r"^run/$", viewsc.runCode, name="run"),
     re_path(r"^submit/$", views.NewSubmission, name="submit"),

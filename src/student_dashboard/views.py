@@ -7,6 +7,7 @@ from accounts.models import (
     course_list,
     student_user,
     submission,
+    comments,
 )
 from django.db.models import Subquery
 from datetime import datetime
@@ -17,7 +18,7 @@ status_dict = {"draft": 0, "posted": 1, "submitted": 2, "overdue": 3, "discarded
 submission_status_dict = {"not_submitted": 0, "submitted": 1, "redo": 2}
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def index(request):
     username = request.user.username
     all_courses = course_list.objects.filter(
@@ -30,19 +31,20 @@ def index(request):
     return render(request, "student_dashboard/home.html", {"courses": all_courses})
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def enrollCourse(request):
     username = request.user.username
     if request.method == "POST":
         enroll_code = request.POST["enroll_code"]
         course = course_list.objects.get(enrollment_code=enroll_code)
+        print(course)
         student = student_user.objects.get(username=username)
         bridge = student_course_bridge(course_id=course, student_id=student)
         bridge.save()
-    return redirect("home")
+    return redirect("student_dashboard")
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def courseView(request):
     courseID = request.GET.get("course_id")
     course = course_list.objects.get(course_id=courseID)
@@ -57,24 +59,28 @@ def courseView(request):
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def viewAssignment(request, course_id, assignment_slug):
     course = course_list.objects.get(course_id=course_id)
     assignment = student_assignments.objects.get(slug=assignment_slug)
     username = request.user.username
-    submissions = submission.objects.filter(
+    submission_d = submission.objects.filter(
         assignment_id_id=assignment.assignment_id, student_id_id=username
     )
-    print(username)
-    print(submissions)
+    if submission_d:
+        submission_d=submission_d[0]
+    comments_det = None
+    if submission_d:
+        print(submission_d.submission_id)
+        comments_det = comments.objects.filter(post_id=submission_d.submission_id)
     return render(
         request,
         "student_dashboard/assignment_detail_and_ide.html",
-        {"course": course, "assignment": assignment},
+        {"course": course, "assignment": assignment, "submission": submission_d, "comments": comments_det},
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def NewSubmission(request):
     if request.is_ajax():
         source = request.POST["source"]
@@ -100,7 +106,6 @@ def NewSubmission(request):
                 submission_code=source,
             )
             new_submission.save()
-        print("successfully submitted")
         res = {
             "run_status": {
                 "memory_used": "2744",
@@ -127,9 +132,26 @@ def NewSubmission(request):
     else:
         return HttpResponseForbidden()
 
+@login_required(login_url="/accounts/login?type=student")
+def comment(request, submission_id):
+    if request.is_ajax():
+        comment_msg = request.POST["msg"]
+        username = request.user.username
+        comment_obj = comments(
+            comment=comment_msg,
+            post_id=submission_id,
+            author_id=username,
+        )
+        comment_obj.save()
+        res = {
+            "posted": True
+        }
+        return JsonResponse(res, safe=False)
+    else:
+        return HttpResponseForbidden()
 
 # Create your views here.
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def PostListViewStudent(request):
     username = request.user.username
     all_assignments = (
@@ -150,7 +172,7 @@ def PostListViewStudent(request):
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def PostDetailView(request, pk):
     assignment_det = student_assignments.objects.get(assignment_id=pk)
     return render(

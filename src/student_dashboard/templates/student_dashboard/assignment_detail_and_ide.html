@@ -34,8 +34,13 @@
   rel="stylesheet"
   href="{% static 'teacher_dashboard/styles/assignment_view.css' %}"
 />
+<link
+  rel="stylesheet"
+  href="{% static 'prism/prism.css' %}"
+/>
 {% endblock style %} {% block content %}
 <div class="container">
+
 
   <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
   <h2 id="id_passer" data-pk={{assignment.assignment_id}}>{{assignment.assignment_name}}</h2>
@@ -45,6 +50,20 @@
         <div id="assignment_body"><h3>Problem:</h3></div>
       </div>
       <br />
+      {% if submission %}
+        <div
+          class=""
+          style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
+        >
+        <pre>
+        <code class="language-{{submission.submission_lang}}">
+        
+        {{submission.submission_code}}
+        </code>
+        </pre>
+        </div>
+
+      {% else %}
       <div
         class=""
         style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
@@ -52,25 +71,25 @@
         <div id="topbar">
           <div class="lang-choose">
             <select class="form-select" name="lang" id="lang">
-              <option value="C">C (gcc 4.8.4)</option>
-              <option value="CPP">C++ (g++ 4.8.4)</option>
-              <option value="CLOJURE">Clojure (clojure 1.1.0)</option>
-              <option value="CSS">CSS</option>
-              <option value="CSHARP">C# (mono 3.2.8)</option>
-              <option value="GO">Go (go 1.4.2)</option>
-              <option value="HASKELL">Haskell (ghc 7.4.1)</option>
-              <option value="JAVA">Java (openjdk 1.7.0_09)</option>
-              <option value="JAVASCRIPT">JavaScript (Rhino 1.7)</option>
-              <option value="LISP">Lisp (csc 4.8.0.5)</option>
-              <option value="OBJECTIVEC">Objective-C (clang 3.3)</option>
-              <option value="PASCAL">Pascal (fpc 2.6.2)</option>
-              <option value="PERL">Perl (perl 5.18.2)</option>
-              <option value="PHP">PHP (php 5.5.9)</option>
-              <option value="PYTHON" selected>Python (python 2.7.6)</option>
-              <option value="RUBY">Ruby (ruby 2.1.1)</option>
-              <option value="R">R (RScript 3.0.2)</option>
-              <option value="RUST">Rust (rustc 1.4.0)</option>
-              <option value="SCALA">Scala (scalac 2.9.2)</option>
+              <option value="C">C</option>
+              <option value="CPP">C++</option>
+              {% comment %} <option value="CLOJURE">Clojure (clojure 1.1.0)</option> {% endcomment %}
+              {% comment %} <option value="CSS">CSS</option> {% endcomment %}
+              <option value="CSHARP">C#</option>
+              {% comment %} <option value="GO">Go (go 1.4.2)</option> {% endcomment %}
+              {% comment %} <option value="HASKELL">Haskell (ghc 7.4.1)</option> {% endcomment %}
+              <option value="JAVA">Java</option>
+              <option value="JAVASCRIPT">JavaScript</option>
+              {% comment %} <option value="LISP">Lisp (csc 4.8.0.5)</option> {% endcomment %}
+              {% comment %} <option value="OBJECTIVEC">Objective-C (clang 3.3)</option> {% endcomment %}
+              {% comment %} <option value="PASCAL">Pascal (fpc 2.6.2)</option> {% endcomment %}
+              {% comment %} <option value="PERL">Perl (perl 5.18.2)</option> {% endcomment %}
+              {% comment %} <option value="PHP">PHP (php 5.5.9)</option> {% endcomment %}
+              <option value="PYTHON" selected>Python3</option>
+              {% comment %} <option value="RUBY">Ruby (ruby 2.1.1)</option> {% endcomment %}
+              {% comment %} <option value="R">R (RScript 3.0.2)</option> {% endcomment %}
+              {% comment %} <option value="RUST">Rust (rustc 1.4.0)</option> {% endcomment %}
+              {% comment %} <option value="SCALA">Scala (scalac 2.9.2)</option> {% endcomment %}
               <option value="TEXTFILE">Text</option>
             </select>
           </div>
@@ -183,6 +202,8 @@
           </div>
         </div>
       </div>
+      {% endif %}
+
     </div>
     <div class="col-lg-4  col-md-12">
       <div class="right-col p-lg-4 pt-lg-0 mt-lg-0 mt-4">
@@ -194,6 +215,12 @@
           <p>Published Date:</p>
           <p>{{assignment.published_date}}</p>
         </div>
+        {% if submission %}
+        <div class="d-flex justify-content-between">
+          <p>Submitted date:</p>
+          <p>{{ submission.submission_date|date:"H:m d M Y"  }}</p>
+        </div>
+        {% endif %}
         <hr />
         <div class="d-flex justify-content-between">
           <p>Course ID:</p>
@@ -214,6 +241,27 @@
           <p>Email:</p>
           <p>{{assignment.course_id.teacher_id.email}}</p>
         </div>
+        {% if submission %}
+        <hr />
+        <div class="">
+        <h4>Comments</h4>
+          <div class="mb-3 row">
+            <div class="col-11">
+              <input type="text" class="form-control" id="comment_body">
+            </div>
+            <button id="comment_btn" class="btn col-1 p-0">
+              <i class="fa fa-comment" aria-hidden="true"></i>
+            </button>
+          </div>
+          {% for comment in comments %}
+          <div class="mb-2">
+          <span class="text-muted">{{comment.author_id}}</span>
+          <br>
+          {{comment.comment}}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -226,5 +274,40 @@
     var $assignmentBody = $("#assignment_body");
     $assignmentBody.append(html[0].data);
   </script>
+  <script src="{% static 'prism/prism.js' %}"></script>
+
+  <script>
+    function comment() {
+        $("#comment_btn").prop("disabled", true);
+
+        var token = $(":input[name='csrfmiddlewaretoken']").val();
+        var comment_msg = $("#comment_body").val();
+        var comment_body = {
+          msg: comment_msg,
+          csrfmiddlewaretoken: token,
+        };
+
+        $.ajax({
+          url: "../../comment/{{submission.submission_id}}",
+          type: "POST",
+          data: comment_body,
+          dataType: "json",
+          timeout: 1000000,
+          success: function (response) {
+            ongoing = false;
+            $("#comment_btn").prop("disabled", false);
+            $("#comment_body").val(null);
+            location.reload();
+          },
+        });
+      }
+
+    $("#comment_btn").click(function () {
+        console.log('aa')
+        comment();
+      });
+  </script>
+
+
   {% endblock content%}
 </body>
