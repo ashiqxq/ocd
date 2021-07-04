@@ -6,17 +6,25 @@
   <li class="nav-item">
     <a class="nav-link active me-5" aria-current="page" href="#">Home</a>
   </li>
-  <li class="nav-item me-5">
-    <a class="nav-link">Hello {{user.first_name}}</a>
-  </li>
-  <li class="nav-item me-5">
-    <a class="nav-link">Profile</a>
-  </li>
+
   <li class="nav-item me-5">
     <a class="nav-link" href="{% url 'ide' %}">IDE</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+  <li class="nav-item dropdown">
+    <div
+      class="dropdown-toggle"
+      id="dropdownMenuButton1"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <a href="#" class="nav-link"> Hello {{user.username}} </a>
+    </div>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+      {% comment %} <li>
+        <a class="dropdown-item">Profile</a>
+      </li> {% endcomment %}
+      <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+    </ul>
   </li>
 </ul>
 {% endblock nav %}

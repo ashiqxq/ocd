@@ -160,7 +160,7 @@
             </div>
           </div>
 
-          <div class="output-details">
+          {% comment %} <div class="output-details">
             <div class="correct log-details">
               <b>Log Details:</b>
               <div id="demo"></div>
@@ -199,7 +199,7 @@
               <b>Compile Status</b>
               <div class="value"></div>
             </div>
-          </div>
+          </div> {% endcomment %}
         </div>
       </div>
       {% endif %}
@@ -258,6 +258,7 @@
           <span class="text-muted">{{comment.author_id}}</span>
           <br>
           {{comment.comment}}
+          <hr>
           </div>
           {% endfor %}
         </div>
