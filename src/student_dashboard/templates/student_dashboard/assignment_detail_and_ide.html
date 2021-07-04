@@ -51,6 +51,7 @@
       </div>
       <br />
       {% if submission %}
+
         <div
           class=""
           style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
@@ -276,6 +277,7 @@
     $assignmentBody.append(html[0].data);
   </script>
   <script src="{% static 'prism/prism.js' %}"></script>
+  <script src="{% static 'prism/prism_python.js' %}"></script>
 
   <script>
     function comment() {
@@ -304,7 +306,6 @@
       }
 
     $("#comment_btn").click(function () {
-        console.log('aa')
         comment();
       });
   </script>
