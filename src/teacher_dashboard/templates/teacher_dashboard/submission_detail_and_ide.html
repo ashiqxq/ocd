@@ -1,5 +1,8 @@
 {% extends 'teacher_dashboard/base.html' %} {% load static %} {% block style %}
-
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
 <link rel="stylesheet" type="text/css" href="{% static 'css/my_style.css' %}" />
 <link
   rel="stylesheet"
@@ -95,7 +98,7 @@
         };
 
         $.ajax({
-          url: "../../comment/{{submission.submission_id}}",
+          url: "../comment/{{submission.submission_id}}",
           type: "POST",
           data: comment_body,
           dataType: "json",
