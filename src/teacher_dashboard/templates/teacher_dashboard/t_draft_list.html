@@ -1,5 +1,5 @@
-{% extends 'teacher_dashboard/base.html' %} {% block content %} {% for draft in
-draft_list %}
+{% extends 'teacher_dashboard/base.html' %} {% block content %} 
+{% for draft in draft_list %}
 <div class="post">
   <h1>
     <a href="{% url 'post_detail' pk=draft.pk %}"
