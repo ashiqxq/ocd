@@ -59,4 +59,6 @@ docs/_build/
 # PyBuilder
 target/
 
-db.sqlite3
+src/db.sqlite3
+src/src/.env
+src/act_env.cmd
