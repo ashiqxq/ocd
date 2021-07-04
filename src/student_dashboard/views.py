@@ -36,8 +36,12 @@ def enrollCourse(request):
     username = request.user.username
     if request.method == "POST":
         enroll_code = request.POST["enroll_code"]
-        course = course_list.objects.get(enrollment_code=enroll_code)
-        print(course)
+        print(enroll_code,'*'*8)
+        try:
+            course = course_list.objects.filter(enrollment_code=enroll_code).first()
+        except course_list.DoesNotExist:
+            course=None
+        print(course,'*'*8)
         student = student_user.objects.get(username=username)
         bridge = student_course_bridge(course_id=course, student_id=student)
         bridge.save()
@@ -66,9 +70,9 @@ def viewAssignment(request, course_id, assignment_slug):
     username = request.user.username
     submission_d = submission.objects.filter(
         assignment_id_id=assignment.assignment_id, student_id_id=username
-    )
-    if submission_d:
-        submission_d=submission_d[0]
+    ).first()
+    # if submission_d:
+    #     submission_d=submission_d[0]
     comments_det = None
     if submission_d:
         print(submission_d.submission_id)
