@@ -75,7 +75,7 @@ def viewAssignment(request, course_id, assignment_slug):
     #     submission_d=submission_d[0]
     comments_det = None
     if submission_d:
-        print(submission_d.submission_id)
+        print(submission_d.submission_code)
         comments_det = comments.objects.filter(post_id=submission_d.submission_id)
     return render(
         request,

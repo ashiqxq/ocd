@@ -44,7 +44,11 @@
             </p>
           </div>
 
+          {% ifequal authType 'teacher' %}
+          <p class="subtitle-text2 text-uppercase m-0">Start teaching</p>
+        {% else %}
           <p class="subtitle-text2 text-uppercase m-0">Start coding</p>
+          {% endifequal %}
           <h2 class="title mb-4">Login to continue</h2>
           <form action="{% url 'login' %}?type={{authType}}" , method="POST">
             {% csrf_token %}
