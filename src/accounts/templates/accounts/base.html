@@ -14,7 +14,7 @@
     />
     <link rel="stylesheet" href="{% static 'accounts/styles/base.css' %}" />
     <link rel="stylesheet" href="{% static 'accounts/styles/register.css' %}" />
-<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     {% block style %}{% endblock style %}
     <title>Aulas Coder Go</title>
   </head>
@@ -22,7 +22,7 @@
     <header class="container">
       <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'home' %}">Aulas | CoderGo</a>
+          {% block navbrand %} {% endblock navbrand %}
           <button
             class="navbar-toggler"
             type="button"
@@ -47,7 +47,6 @@
       crossorigin="anonymous"
     ></script>
     {% block script %}{% endblock script %}
-
   </body>
 </html>
 

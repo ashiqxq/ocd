@@ -1,8 +1,9 @@
 {% extends 'accounts/base.html' %}
 {% load static %}
-
+{% block navbrand %}
+<a class="navbar-brand" href="{% url 'teacher_dashboard' %}">Aulas | CoderGo</a>
+{% endblock navbrand %}
 {% block nav %}
-
 <ul class="navbar-nav d-flex justify-content-end w-100 mb-2 mb-lg-0">
   <li class="nav-item">
     <a
