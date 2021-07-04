@@ -69,7 +69,7 @@ def viewAssignment(request, course_id, assignment_slug):
     return render(
         request,
         "student_dashboard/assignment_detail_and_ide.html",
-        {"course": course, "assignment": assignment},
+        {"course": course, "assignment": assignment, "submission": submissions},
     )
 
 

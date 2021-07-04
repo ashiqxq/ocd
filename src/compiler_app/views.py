@@ -1,8 +1,6 @@
 from django.http.response import HttpResponseForbidden
 from django.shortcuts import render
 from django.http import JsonResponse
-import requests
-import sys
 import shutil, subprocess
 
 # Create your views here.

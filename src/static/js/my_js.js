@@ -439,6 +439,7 @@ $(document).ready(function () {
         $(".io-show").hide();
         $(".output-details").hide();
         console.log("thrice");
+        location.reload();
       },
 
       error: function (error) {

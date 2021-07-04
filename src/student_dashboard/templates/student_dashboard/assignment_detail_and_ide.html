@@ -34,8 +34,13 @@
   rel="stylesheet"
   href="{% static 'teacher_dashboard/styles/assignment_view.css' %}"
 />
+<link
+  rel="stylesheet"
+  href="{% static 'prism/prism.css' %}"
+/>
 {% endblock style %} {% block content %}
 <div class="container">
+
 
   <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
   <h2 id="id_passer" data-pk={{assignment.assignment_id}}>{{assignment.assignment_name}}</h2>
@@ -45,6 +50,20 @@
         <div id="assignment_body"><h3>Problem:</h3></div>
       </div>
       <br />
+      {% if submission %}
+      <div
+        class=""
+        style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
+      >
+      <pre>
+      <code class="language-{{submission.0.submission_lang}}">
+      
+      {{submission.0.submission_code}}
+      </code>
+      </pre>
+      </div>
+
+{% else %}
       <div
         class=""
         style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
@@ -183,6 +202,8 @@
           </div>
         </div>
       </div>
+{% endif %}
+
     </div>
     <div class="col-lg-4  col-md-12">
       <div class="right-col p-lg-4 pt-lg-0 mt-lg-0 mt-4">
@@ -194,6 +215,12 @@
           <p>Published Date:</p>
           <p>{{assignment.published_date}}</p>
         </div>
+        {% if submission %}
+        <div class="d-flex justify-content-between">
+          <p>Submitted date:</p>
+          <p>{{ submission.0.submission_date|date:"H:m d M Y"  }}</p>
+        </div>
+        {% endif %}
         <hr />
         <div class="d-flex justify-content-between">
           <p>Course ID:</p>
@@ -226,5 +253,7 @@
     var $assignmentBody = $("#assignment_body");
     $assignmentBody.append(html[0].data);
   </script>
+  <script src="{% static 'prism/prism.js' %}"></script>
+
   {% endblock content%}
 </body>
