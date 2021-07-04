@@ -56,21 +56,22 @@ def runCode(request):
                         "-o",
                         f"{codefile}",
                     ],
-                    stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
                 )
+                # print(proc.stderr, proc.stdout)
                 subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
-                inpt.close()
                 error = proc.stderr
                 if error == "":
                     proc = subprocess.run(
                         [f"./{codefile}"],
+                        stdin=inpt,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
                         text=True,
                     )
+                    inpt.close()
                     subprocess.run(["sudo", "rm", f"{codefile}"])
                     output = proc.stdout
                     error = proc.stderr
@@ -89,21 +90,21 @@ def runCode(request):
                         run_cmd[lang],
                         f"{codefile}.{file_ext[lang]}",
                     ],
-                    stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
                 )
                 subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
-                inpt.close()
                 error = proc.stderr
                 if error == "":
                     proc = subprocess.run(
                         ["mono", f"{codefile}.exe"],
+                        stdin=inpt,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
                         text=True,
                     )
+                    inpt.close()
                     subprocess.run(["sudo", "rm", f"{codefile}.exe"])
                     output = proc.stdout
                     error = proc.stderr
@@ -162,21 +163,21 @@ def runCode(request):
                         # "-o",
                         # f"{codefile}",
                     ],
-                    stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
                 )
                 subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
-                inpt.close()
                 error = proc.stderr
                 if error == "":
                     proc = subprocess.run(
                         ["java", f"{class_name}"],
+                        stdin=inpt,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
                         text=True,
                     )
+                    inpt.close()
                     subprocess.run(["sudo", "rm", f"{codefile}.class"])
                     output = proc.stdout
                     error = proc.stderr
