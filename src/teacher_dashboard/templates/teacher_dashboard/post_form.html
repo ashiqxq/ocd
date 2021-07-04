@@ -1,16 +1,15 @@
 {% extends 'teacher_dashboard/base.html' %} {% block content %}
 <div class="container">
 <form
-{% if assignment %}
-action="{% url 'edit_assignment' course_id=course.course_id assignment_slug=assignment.slug %}"
-{% else %}
+  {% if assignment %}
+  action="{% url 'edit_assignment' course_id=course.course_id assignment_slug=assignment.slug %}"
+  {% else %}
   action="{% url 'add_new_assignment' course_id=course.course_id %}"
   {% endif %}
   method="POST"
   class="post-form"
 >
   {% csrf_token %}
-
 
   <div class="mb-3 row">
     <label for="course_id" class="col-sm-2 col-form-label">Course ID</label>
@@ -93,7 +92,6 @@ action="{% url 'edit_assignment' course_id=course.course_id assignment_slug=assi
   </div>
 
   <div class="mb-3">
-
     <label for="assignment_form" class="form-label"
       >Detailed Problem Statement</label
     >
@@ -111,11 +109,11 @@ action="{% url 'edit_assignment' course_id=course.course_id assignment_slug=assi
       </button>
     </div>
     <div class="col-6">
-    {% if assignment %}
-    <button type="submit" name="edit" class="btn green-btn w-100 mt-3">
+      {% if assignment %}
+      <button type="submit" name="edit" class="btn green-btn w-100 mt-3">
         Edit
       </button>
-    {% else %}
+      {% else %}
       <button type="submit" name="publish" class="btn green-btn w-100 mt-3">
         Publish
       </button>

@@ -2,35 +2,23 @@
 
 body {
   font-family: "Roboto", sans-serif !important;
-  background-color: #fafafa;
-}
-ul {
-  position: absolute;
-  right: -44px;
 }
 
 .navbar-brand {
   color: #00c898 !important;
-  font-size: 2.6rem !important;
-  font-weight: bold;
-  position: absolute;
-  left: -44px;
+  font-size: 2rem !important;
+  font-weight: bold !important;
 }
 
 .nav-link {
-  font-size: 1.6rem;
+  font-size: 1.2rem !important;
 }
 
 .nav-link {
-  display: inline-block;
-  position: relative;
+  display: inline-block !important;
+  position: relative !important;
   padding: 6px 2px !important;
   /* color: #0087ca; */
-}
-
-/* <<<<<<< master */
-a {
-  text-decoration: none !important;
 }
 
 .nav-link:after {
@@ -49,10 +37,6 @@ a {
 .nav-link:hover::after {
   transform: scaleX(1);
   transform-origin: bottom left;
-}
-
-.nav-link:hover {
-  text-decoration: none;
 }
 
 .landing-section {
@@ -145,6 +129,3 @@ a {
 .green-text {
   color: #00c898;
 }
-
-
-
