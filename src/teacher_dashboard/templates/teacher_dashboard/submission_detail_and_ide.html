@@ -17,12 +17,12 @@
   <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
   <h2 id="id_passer" data-pk={{assignment.assignment_id}}>{{assignment.assignment_name}}</h2>
   <div class="row">
-    <div class="col-8 p-0 pt-2">
+    <div class="col-lg-8 col-md-12">
       <div class="left-col p-4">
         <div id="assignment_body"><h3>Problem:</h3></div>
       </div>
       <br />
-<div
+    <div
         class=""
         style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
       >
@@ -35,8 +35,8 @@
     </div>
 
     </div>
-    <div class="col-4">
-      <div class="right-col p-4 pt-0">
+    <div class="col-lg-4  col-md-12">
+      <div class="right-col p-lg-4 pt-lg-0 mt-lg-0 mt-4">
         <div class="d-flex justify-content-between">
           <p>Due Date:</p>
           <p>{{assignment.due_date}}</p>
@@ -79,6 +79,7 @@
           <span class="text-muted">{{comment.author_id}}</span>
           <br>
           {{comment.comment}}
+          <hr>
           </div>
           {% endfor %}
         </div>
