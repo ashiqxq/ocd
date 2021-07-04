@@ -66,7 +66,9 @@ def viewAssignment(request, course_id, assignment_slug):
     username = request.user.username
     submission_d = submission.objects.filter(
         assignment_id_id=assignment.assignment_id, student_id_id=username
-    )[0]
+    )
+    if submission_d:
+        submission_d=submission_d[0]
     comments_det = None
     if submission_d:
         print(submission_d.submission_id)
