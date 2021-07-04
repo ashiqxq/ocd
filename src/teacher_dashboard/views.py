@@ -37,8 +37,9 @@ class AboutView(TemplateView):
     template_name = "blog/about.html"
 
 
+@login_required(login_url="/accounts/login?type=student")
 def PostDetailView(request, pk):
-    pass
+    return index(request)
 
 
 @login_required(login_url="/accounts/login?type=student")
