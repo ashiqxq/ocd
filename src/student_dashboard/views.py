@@ -72,7 +72,7 @@ def viewAssignment(request, course_id, assignment_slug):
     comments_det = None
     if submission_d:
         print(submission_d.submission_id)
-        comments_det = comments.objects.filter(post_id=submission_d.submission_id, author_id=username)
+        comments_det = comments.objects.filter(post_id=submission_d.submission_id)
     return render(
         request,
         "student_dashboard/assignment_detail_and_ide.html",

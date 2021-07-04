@@ -8,7 +8,8 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-
+from django.http.response import HttpResponseForbidden
+from django.http import JsonResponse
 # from blog.models import Post,Comment
 # from blog.forms import PostForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,7 +17,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
-from accounts.models import student_assignments, teacher_user, course_list, submission
+from accounts.models import student_assignments, teacher_user, course_list, submission, comments
 from dateutil import parser
 from dateutil import tz
 from django.http import HttpResponse
@@ -236,8 +237,27 @@ def SubmissionDetailView(request, pk):
     assignment_det = student_assignments.objects.get(
         assignment_id=submission_det.assignment_id_id
     )
+    comments_det = comments.objects.filter(post_id=pk)
     return render(
         request,
         "teacher_dashboard/submission_detail_and_ide.html",
-        {"assignment": assignment_det, "submission": submission_det},
+        {"assignment": assignment_det, "submission": submission_det, "comments": comments_det},
     )
+
+@login_required(login_url="/accounts/login?type=student")
+def comment(request, submission_id):
+    if request.is_ajax():
+        comment_msg = request.POST["msg"]
+        username = request.user.username
+        comment_obj = comments(
+            comment=comment_msg,
+            post_id=submission_id,
+            author_id=username,
+        )
+        comment_obj.save()
+        res = {
+            "posted": True
+        }
+        return JsonResponse(res, safe=False)
+    else:
+        return HttpResponseForbidden()

@@ -276,37 +276,37 @@
   </script>
   <script src="{% static 'prism/prism.js' %}"></script>
 
-<script>
-function comment() {
-    $("#comment_btn").prop("disabled", true);
+  <script>
+    function comment() {
+        $("#comment_btn").prop("disabled", true);
 
-    var token = $(":input[name='csrfmiddlewaretoken']").val();
-    var comment_msg = $("#comment_body").val();
-    var comment_body = {
-      msg: comment_msg,
-      csrfmiddlewaretoken: token,
-    };
+        var token = $(":input[name='csrfmiddlewaretoken']").val();
+        var comment_msg = $("#comment_body").val();
+        var comment_body = {
+          msg: comment_msg,
+          csrfmiddlewaretoken: token,
+        };
 
-    $.ajax({
-      url: "../../comment/{{submission.submission_id}}",
-      type: "POST",
-      data: comment_body,
-      dataType: "json",
-      timeout: 1000000,
-      success: function (response) {
-        ongoing = false;
-        $("#comment_btn").prop("disabled", false);
-        $("#comment_body").val(null);
-        location.reload();
-      },
-    });
-  }
+        $.ajax({
+          url: "../../comment/{{submission.submission_id}}",
+          type: "POST",
+          data: comment_body,
+          dataType: "json",
+          timeout: 1000000,
+          success: function (response) {
+            ongoing = false;
+            $("#comment_btn").prop("disabled", false);
+            $("#comment_body").val(null);
+            location.reload();
+          },
+        });
+      }
 
-$("#comment_btn").click(function () {
-    console.log('aa')
-    comment();
-  });
-</script>
+    $("#comment_btn").click(function () {
+        console.log('aa')
+        comment();
+      });
+  </script>
 
 
   {% endblock content%}
