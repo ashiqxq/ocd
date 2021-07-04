@@ -1,18 +1,11 @@
 {% extends 'teacher_dashboard/base.html' %} {% block content %}
-
+<div class="container">
 <form
-  {%
-  if
-  assignment
-  %}
+  {% if assignment %}
   action="{% url 'edit_assignment' course_id=course.course_id assignment_slug=assignment.slug %}"
-  {%
-  else
-  %}
+  {% else %}
   action="{% url 'add_new_assignment' course_id=course.course_id %}"
-  {%
-  endif
-  %}
+  {% endif %}
   method="POST"
   class="post-form"
 >
@@ -128,6 +121,7 @@
     </div>
   </div>
 </form>
+</div>
 <script src="https://cdn.ckeditor.com/ckeditor5/28.0.0/classic/ckeditor.js"></script>
 <script>
   ClassicEditor.create(document.querySelector("#editor")).catch((error) => {
