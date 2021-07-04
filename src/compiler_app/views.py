@@ -1,8 +1,6 @@
 from django.http.response import HttpResponseForbidden
 from django.shortcuts import render
 from django.http import JsonResponse
-import requests
-import sys
 import shutil, subprocess
 
 # Create your views here.
@@ -17,11 +15,14 @@ def runCode(request):
     if request.is_ajax():
         source = request.POST["source"]
         lang = request.POST["lang"]
-        print(lang)
         if lang == "JAVA":
-            _, _, after_keyword = source.split("public static void main")[0].partition("class")
+            _, _, after_keyword = source.split("public static void main")[0].partition(
+                "class"
+            )
             class_name = after_keyword.split(" ")[1]
             codefile = class_name
+        # elif lang == "CSHARP":
+        #     pass
         else:
             codefile = "main"
         inp = ""
@@ -32,10 +33,24 @@ def runCode(request):
         with open("codes.txt", "w") as cf, open("inputs.txt", "w") as snp:
             cf.write(source)
             snp.write(inp)
-        file_ext = {"CPP": "cpp", "C": "c", "PYTHON": "py", "JAVA": "java", "JAVASCRIPT": "js"}
-        run_cmd = {"CPP": "g++", "C": "gcc", "JAVA": "javac", "JAVASCRIPT": "node"}
+        file_ext = {
+            "CPP": "cpp",
+            "C": "c",
+            "PYTHON": "py",
+            "JAVA": "java",
+            "JAVASCRIPT": "js",
+            "CSHARP": "cs",
+        }
+        run_cmd = {
+            "CPP": "g++",
+            "C": "gcc",
+            "JAVA": "javac",
+            "JAVASCRIPT": "node",
+            "CSHARP": "mcs",
+        }
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
+        # subprocess.run(["sudo", "rm", "codes.txt"])
         if lang == "C" or lang == "CPP":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
@@ -45,22 +60,23 @@ def runCode(request):
                         "-o",
                         f"{codefile}",
                     ],
-                    stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
                 )
-                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
-                inpt.close()
+                # print(proc.stderr, proc.stdout)
+                subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
                 error = proc.stderr
                 if error == "":
                     proc = subprocess.run(
                         [f"./{codefile}"],
+                        stdin=inpt,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
                         text=True,
                     )
-                    subprocess.run(["rm", f"{codefile}"])
+                    inpt.close()
+                    subprocess.run(["sudo", "rm", f"{codefile}"])
                     output = proc.stdout
                     error = proc.stderr
                     if error == "":
@@ -70,7 +86,40 @@ def runCode(request):
                 else:
                     outpt.write(error)
                 outpt.close()
-            subprocess.run(["rm", "inputs.txt"])
+            subprocess.run(["sudo", "rm", "inputs.txt"])
+        elif lang == "CSHARP":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        f"{codefile}.{file_ext[lang]}",
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
+                error = proc.stderr
+                if error == "":
+                    proc = subprocess.run(
+                        ["mono", f"{codefile}.exe"],
+                        stdin=inpt,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    inpt.close()
+                    subprocess.run(["sudo", "rm", f"{codefile}.exe"])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == "":
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["sudo", "rm", "inputs.txt"])
         elif lang == "PYTHON":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
@@ -80,6 +129,7 @@ def runCode(request):
                     stderr=subprocess.PIPE,
                     text=True,
                 )
+                # subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
                 inpt.close()
                 output = proc.stdout
                 error = proc.stderr
@@ -88,7 +138,7 @@ def runCode(request):
                 else:
                     outpt.write(error)
                 outpt.close()
-            # subprocess.run(["rm", "inputs.txt"])
+            # subprocess.run(["sudo", "rm", "inputs.txt"])
         elif lang == "JAVASCRIPT":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
@@ -98,7 +148,7 @@ def runCode(request):
                     stderr=subprocess.PIPE,
                     text=True,
                 )
-                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
                 inpt.close()
                 output = proc.stdout
                 error = proc.stderr
@@ -107,7 +157,7 @@ def runCode(request):
                 else:
                     outpt.write(error)
                 outpt.close()
-            subprocess.run(["rm", "inputs.txt"])
+            subprocess.run(["sudo", "rm", "inputs.txt"])
         elif lang == "JAVA":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
@@ -117,22 +167,22 @@ def runCode(request):
                         # "-o",
                         # f"{codefile}",
                     ],
-                    stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
                 )
-                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
-                inpt.close()
+                subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
                 error = proc.stderr
                 if error == "":
                     proc = subprocess.run(
                         ["java", f"{class_name}"],
+                        stdin=inpt,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
                         text=True,
                     )
-                    subprocess.run(["rm", f"{codefile}.class"])
+                    inpt.close()
+                    subprocess.run(["sudo", "rm", f"{codefile}.class"])
                     output = proc.stdout
                     error = proc.stderr
                     if error == "":
@@ -142,12 +192,12 @@ def runCode(request):
                 else:
                     outpt.write(error)
                 outpt.close()
-            subprocess.run(["rm", "inputs.txt"])
+            subprocess.run(["sudo", "rm", "inputs.txt"])
         with open("outputs.txt", "r") as f:
             output = f.read()
             otp_html = "<pre>" + output + "</pre>"
             f.close()
-        # subprocess.run(["rm", "outputs.txt"])
+        # subprocess.run(["sudo", "rm", "outputs.txt"])
         res = {
             "run_status": {
                 "memory_used": "2744",

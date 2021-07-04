@@ -61,4 +61,6 @@ target/
 
 src/db.sqlite3
 src/src/.env
+
+static/
 src/act_env.cmd

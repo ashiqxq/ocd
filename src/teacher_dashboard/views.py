@@ -8,7 +8,8 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-
+from django.http.response import HttpResponseForbidden
+from django.http import JsonResponse
 # from blog.models import Post,Comment
 # from blog.forms import PostForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,7 +17,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
-from accounts.models import student_assignments, teacher_user, course_list, submission
+from accounts.models import student_assignments, teacher_user, course_list, submission, comments
 from dateutil import parser
 from dateutil import tz
 from django.http import HttpResponse
@@ -39,14 +40,15 @@ class AboutView(TemplateView):
 def PostDetailView(request, pk):
     pass
 
-@login_required(login_url='/accounts/login?type=student')
+
+@login_required(login_url="/accounts/login?type=student")
 def index(request):
     username = request.user.username
     courses = getCourses(username)
     return render(request, "teacher_dashboard/home.html", {"courses": courses})
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def handleCreateCourse(request):
     username = request.user.username
     teacher = teacher_user.objects.get(username=username)
@@ -71,7 +73,7 @@ def getCourses(teacherID):
     return all_courses
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def deleteCourses(request):
     courseID = request.GET.get("course_id")
     course = course_list.objects.get(course_id=courseID)
@@ -79,7 +81,7 @@ def deleteCourses(request):
     return redirect("teacher_dashboard")
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def editCourses(request):
     courseID = request.GET.get("course_id")
     if request.method == "POST":
@@ -93,7 +95,7 @@ def editCourses(request):
     return redirect("teacher_dashboard")
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def courseView(request):
     courseID = request.GET.get("course_id")
     course = course_list.objects.get(course_id=courseID)
@@ -114,7 +116,7 @@ def courseView(request):
 #     return teacher.first_name + " " + teacher.last_name
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def PostListView(request):
     # return render(request, 'teacher_dashboard/base.html')
     username = request.user.username
@@ -134,9 +136,8 @@ def PostListView(request):
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def DraftListView(request):
-    print("visited")
     username = request.user.username
     all_drafts = (
         student_assignments.objects.filter(status=status_dict["draft"])
@@ -152,7 +153,7 @@ def DraftListView(request):
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def createAssignment(request, course_id, assignment_slug=None):
     username = request.user.username
     course = course_list.objects.get(course_id=course_id)
@@ -167,7 +168,7 @@ def createAssignment(request, course_id, assignment_slug=None):
         return render(request, "teacher_dashboard/post_form.html", {"course": course})
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def handle_new_post(request, course_id, assignment_slug=None):
     if request.method == "POST":
         pid = request.user.username
@@ -177,7 +178,6 @@ def handle_new_post(request, course_id, assignment_slug=None):
         due_date = request.POST["date"].split(" ")[0]
         due_time = request.POST["time"]
         assignment_due = parser.parse(f"{due_date} {due_time}:00", tzinfos=tzinfos)
-        print(assignment_detail)
         if "save" in request.POST:
             new_assignment = student_assignments(
                 course_id_id=course_id,
@@ -188,7 +188,7 @@ def handle_new_post(request, course_id, assignment_slug=None):
                 status=status_dict["draft"],
             )
             new_assignment.save()
-            return redirect("home")
+            return redirect("teacher_dashboard")
         elif "publish" in request.POST:
             new_assignment = student_assignments(
                 course_id_id=course_id,
@@ -199,26 +199,24 @@ def handle_new_post(request, course_id, assignment_slug=None):
                 status=status_dict["posted"],
             )
             new_assignment.save()
-            return redirect("home")
+            return redirect("teacher_dashboard")
         elif "edit" in request.POST:
             assignment = student_assignments.objects.get(slug=assignment_slug)
             assignment.assignment_name = assignment_name
             assignment.assignment_body = assignment_detail
             assignment.due_date = assignment_due
             assignment.save()
-            return redirect("home")
+            return redirect("teacher_dashboard")
     return HttpResponse("hello")
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def viewAssignment(request, course_id, assignment_slug):
     course = course_list.objects.get(course_id=course_id)
     assignment = student_assignments.objects.get(slug=assignment_slug)
-    print(assignment.assignment_id)
     all_submission_det = submission.objects.filter(
         assignment_id=assignment.assignment_id
     )
-    print(all_submission_det)
     return render(
         request,
         "teacher_dashboard/assignment_view.html",
@@ -226,21 +224,40 @@ def viewAssignment(request, course_id, assignment_slug):
     )
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def deleteAssignment(request, assignment_slug):
     assignment = student_assignments.objects.get(slug=assignment_slug)
     assignment.delete()
     return redirect("home")
 
 
-@login_required(login_url='/accounts/login?type=student')
+@login_required(login_url="/accounts/login?type=student")
 def SubmissionDetailView(request, pk):
     submission_det = submission.objects.get(submission_id=pk)
     assignment_det = student_assignments.objects.get(
         assignment_id=submission_det.assignment_id_id
     )
+    comments_det = comments.objects.filter(post_id=pk)
     return render(
         request,
         "teacher_dashboard/submission_detail_and_ide.html",
-        {"assignment": assignment_det, "submission": submission_det},
+        {"assignment": assignment_det, "submission": submission_det, "comments": comments_det},
     )
+
+@login_required(login_url="/accounts/login?type=student")
+def comment(request, submission_id):
+    if request.is_ajax():
+        comment_msg = request.POST["msg"]
+        username = request.user.username
+        comment_obj = comments(
+            comment=comment_msg,
+            post_id=submission_id,
+            author_id=username,
+        )
+        comment_obj.save()
+        res = {
+            "posted": True
+        }
+        return JsonResponse(res, safe=False)
+    else:
+        return HttpResponseForbidden()

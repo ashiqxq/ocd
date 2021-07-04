@@ -34,6 +34,12 @@ class course_list(models.Model):
     )
     teacher_id = models.ForeignKey(teacher_user, null=True, on_delete=models.SET_NULL)
 
+class comments(models.Model):
+    id = models.AutoField(primary_key=True)
+    comment = models.CharField(max_length=500, null=True, blank=False)
+    post_id = models.CharField(max_length=200, null=True, blank=False)
+    author = models.ForeignKey(all_users, null=True, on_delete=models.SET_NULL)
+
 
 class student_assignments(models.Model):
     assignment_id = models.AutoField(primary_key=True)
