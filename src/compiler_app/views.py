@@ -42,7 +42,8 @@ def runCode(request):
             "JAVASCRIPT": "js",
             "CSHARP": "cs",
             "GO": "go",
-            "RUBY": "rb"
+            "RUBY": "rb",
+            "KOTLIN": "kt"
         }
         run_cmd = {
             "CPP": "g++",
@@ -53,7 +54,8 @@ def runCode(request):
             "CSHARP": "mcs",
             "GO": "go",
             "RUBY": 'ruby',
-            "PYTHON": "python3"
+            "PYTHON": "python3",
+            "KOTLIN": "kotlinc"
         }
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
@@ -209,8 +211,6 @@ def runCode(request):
                     [
                         run_cmd[lang],
                         f"{codefile}.{file_ext[lang]}",
-                        # "-o",
-                        # f"{codefile}",
                     ],
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
@@ -228,6 +228,42 @@ def runCode(request):
                     )
                     inpt.close()
                     subprocess.run(["rm", f"{codefile}.class"])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == "":
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "KOTLIN":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        f"{codefile}.{file_ext[lang]}",
+                        "-include-runtime",
+                        "-d",
+                        f"{codefile}.jar"
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                error = proc.stderr
+                if error == "":
+                    proc = subprocess.run(
+                        ["java", "-jar", f"{codefile}.jar"],
+                        stdin=inpt,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    inpt.close()
+                    subprocess.run(["rm", f"{codefile}.jar"])
                     output = proc.stdout
                     error = proc.stderr
                     if error == "":
