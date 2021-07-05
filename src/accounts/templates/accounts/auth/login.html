@@ -72,6 +72,10 @@
                 required
               />
             </div>
+            {% if err_body %}
+                <div class="text-red">{{err_body.credentials}}</div>
+            
+            {% endif %}
             <button type="submit" class="btn green-btn w-100 mt-3">
               Submit
             </button>

@@ -69,8 +69,8 @@
         class=""
         style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
       >
-        <div id="topbar">
-          <div class="lang-choose">
+        <div id="topbar" class="row">
+          <div class="col-3">
             <select class="form-select" name="lang" id="lang">
               <option value="C">C</option>
               <option value="CPP">C++</option>
@@ -94,6 +94,26 @@
               <option value="TEXTFILE">Text</option>
             </select>
           </div>
+          <div class="col-2 align-items-center d-flex ms-auto">
+          <a href="#" id="download">
+              download code
+              <span
+                class="glyphicon glyphicon-download-alt"
+                aria-hidden="true"
+              ></span>
+            </a>
+          </div>
+          <div class="col-3">
+            <div class="theme-choose">
+              <select class="form-select" name="theme" id="theme">
+                <option value="Light" selected>Light</option>
+                <option value="Monokai">Monokai</option>
+                <option value="Solarised Light">Solarised Light</option>
+                <option value="Twilight">Twilight</option>
+              </select>
+            </div>
+          </div>
+            
         </div>
 
         <pre id="editor"></pre>
