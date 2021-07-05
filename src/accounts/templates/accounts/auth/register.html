@@ -13,12 +13,14 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="{% static 'accounts/styles/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/my_styles.css' %}" />
     <link rel="stylesheet" href="{% static 'accounts/styles/register.css' %}" />
     <!-- <a href='https://www.freepik.com/free-photos-vectors/school'>School vector created by pch.vector - www.freepik.com</a> -->
     <!-- {% block style %}{% endblock style %} -->
     <title>Aulas Coder Go</title>
   </head>
   <body>
+  {% comment %} {{err_message}} {% endcomment %}
     <div class="">
       <div class="col-lg-5 col-md-7 col-sm-12 col-left">
         <nav class="d-flex justify-content-between">
@@ -54,8 +56,12 @@
                 class="form-control"
                 id="username"
                 name="username"
+                aria-describedby="username_help"
                 required
-              />
+              />  
+              {% if err_body.username %}
+                <div id="username_help" class="form-text text-red">{{err_body.username}}</div>
+              {% endif %}
             </div>
             <div class="mb-2">
               <label for="firstname" class="form-label">First name</label>
@@ -94,8 +100,12 @@
                 class="form-control"
                 id="pass1"
                 name="pass1"
+                aria-describedby="password_help"
                 required
               />
+              {% if err_body.password %}
+                <div id="password_help" class="form-text text-red">{{err_body.password}}</div>
+              {% endif %}
             </div>
             <div class="mb-2">
               <label for="pass2" class="form-label">Confirm Password</label>
