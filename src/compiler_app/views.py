@@ -197,6 +197,7 @@ def runCode(request):
             subprocess.run(["rm", "inputs.txt"])
         elif lang == "GO":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                subprocess.run(["echo", "$GOPATH"])
                 proc = subprocess.run(
                     [
                         run_cmd[lang],
