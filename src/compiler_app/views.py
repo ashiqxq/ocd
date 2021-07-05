@@ -37,6 +37,7 @@ def runCode(request):
             "CPP": "cpp",
             "C": "c",
             "PYTHON": "py",
+            "PHP": "php",
             "JAVA": "java",
             "JAVASCRIPT": "js",
             "CSHARP": "cs",
@@ -45,6 +46,7 @@ def runCode(request):
         run_cmd = {
             "CPP": "g++",
             "C": "gcc",
+            "PHP": "php",
             "JAVA": "javac",
             "JAVASCRIPT": "node",
             "CSHARP": "mcs",
@@ -125,13 +127,13 @@ def runCode(request):
         elif lang == "PYTHON":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
-                    ["python", f"{codefile}.{file_ext[lang]}"],
+                    ["python3", f"{codefile}.{file_ext[lang]}"],
                     stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
                 )
-                # subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
                 inpt.close()
                 output = proc.stdout
                 error = proc.stderr
@@ -140,7 +142,26 @@ def runCode(request):
                 else:
                     outpt.write(error)
                 outpt.close()
-            # subprocess.run(["sudo", "rm", "inputs.txt"])
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "PHP":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
         elif lang == "JAVASCRIPT":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
@@ -240,7 +261,7 @@ def runCode(request):
             output = f.read()
             otp_html = "<pre>" + output + "</pre>"
             f.close()
-        # subprocess.run(["sudo", "rm", "outputs.txt"])
+        subprocess.run(["rm", "outputs.txt"])
         res = {
             "run_status": {
                 "memory_used": "2744",
