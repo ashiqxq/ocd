@@ -60,7 +60,7 @@
                 required
               />  
               {% if err_body.username %}
-                <div id="username_help" class="form-text text-red">{{err_body.username}}</div>
+                <div id="username_help" class="form-text text-danger">{{err_body.username}}</div>
               {% endif %}
             </div>
             <div class="mb-2">
@@ -104,7 +104,7 @@
                 required
               />
               {% if err_body.password %}
-                <div id="password_help" class="form-text text-red">{{err_body.password}}</div>
+                <div id="password_help" class="form-text text-danger">{{err_body.password}}</div>
               {% endif %}
             </div>
             <div class="mb-2">
