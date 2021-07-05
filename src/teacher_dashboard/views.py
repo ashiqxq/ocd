@@ -58,14 +58,19 @@ def handleCreateCourse(request):
         courseTitle = request.POST["courseTitle"]
         courseDesc = request.POST["courseDesc"]
         enrollment_code = get_random_string(6)
-        course = course_list(
-            course_id=courseID,
-            course_name=courseTitle,
-            course_desc=courseDesc,
-            enrollment_code=enrollment_code,
-            teacher_id=teacher,
-        )
-        course.save()
+        course = course_list.objects.filter(course_id=courseID).first()
+        if course is None:
+            request.session['course_exist'] = False
+            course = course_list(
+                course_id=courseID,
+                course_name=courseTitle,
+                course_desc=courseDesc,
+                enrollment_code=enrollment_code,
+                teacher_id=teacher,
+            )
+            course.save()
+        else:
+            request.session['course_exist'] = True
     return redirect("teacher_dashboard")
 
 
@@ -98,6 +103,8 @@ def editCourses(request):
 
 @login_required(login_url="/accounts/login?type=student")
 def courseView(request):
+    if 'course_exist' in request.session:
+        request.session.pop('course_exist', None)
     courseID = request.GET.get("course_id")
     course = course_list.objects.get(course_id=courseID)
     username = request.user.username
