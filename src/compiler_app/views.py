@@ -45,7 +45,7 @@ def runCode(request):
             "RUBY": "rb",
             "KOTLIN": "kt",
             "LISP": "lisp",
-            "PERL", "pi"
+            "PERL": "pi"
         }
         run_cmd = {
             "CPP": "g++",
