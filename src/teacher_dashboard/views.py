@@ -213,6 +213,7 @@ def handle_new_post(request, course_id, assignment_slug=None):
             assignment.assignment_name = assignment_name
             assignment.assignment_body = assignment_detail
             assignment.due_date = assignment_due
+            assignment.status=status_dict["posted"]
             assignment.save()
             return redirect("teacher_dashboard")
     return HttpResponse("hello")
