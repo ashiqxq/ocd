@@ -20,7 +20,7 @@
     <title>Aulas Coder Go</title>
   </head>
   <body>
-  {% comment %} {{err_message}} {% endcomment %}
+    {% comment %} {{err_message}} {% endcomment %}
     <div class="">
       <div class="col-lg-5 col-md-7 col-sm-12 col-left">
         <nav class="d-flex justify-content-between">
@@ -32,20 +32,20 @@
           >
         </nav>
         <section class="register">
-        <div class="content-s d-none">
-          <h2 class="mb-5">
-            {% ifequal authType 'teacher' %} Start assessing your students'
-            coding and develop their programming skills. {% else %}Pursue your
-            journey of becoming a good programmer. {% endifequal %}
-          </h2>
-          <p></p>
-        </div>
-        {% ifequal authType 'teacher' %}
+          <div class="content-s d-none">
+            <h2 class="mb-5">
+              {% ifequal authType 'teacher' %} Start assessing your students'
+              coding and develop their programming skills. {% else %}Pursue your
+              journey of becoming a good programmer. {% endifequal %}
+            </h2>
+            <p></p>
+          </div>
+          {% ifequal authType 'teacher' %}
           <p class="subtitle-text2 text-uppercase m-0">Start teaching</p>
-        {% else %}
+          {% else %}
           <p class="subtitle-text2 text-uppercase m-0">Start coding</p>
           {% endifequal %}
-          
+
           <h2 class="title mb-4">Create an account</h2>
           <form action="{% url 'signup' %}?type={{authType}}" , method="POST">
             {% csrf_token %}
@@ -58,9 +58,11 @@
                 name="username"
                 aria-describedby="username_help"
                 required
-              />  
+              />
               {% if err_body.username %}
-                <div id="username_help" class="form-text text-danger">{{err_body.username}}</div>
+              <div id="username_help" class="form-text text-danger">
+                {{err_body.username}}
+              </div>
               {% endif %}
             </div>
             <div class="mb-2">
@@ -104,7 +106,9 @@
                 required
               />
               {% if err_body.password %}
-                <div id="password_help" class="form-text text-danger">{{err_body.password}}</div>
+              <div id="password_help" class="form-text text-danger">
+                {{err_body.password}}
+              </div>
               {% endif %}
             </div>
             <div class="mb-2">
@@ -121,11 +125,23 @@
               Submit
             </button>
           </form>
-          <p class="mt-3">
+          <p class="mt-3 mb-1">
             Already have an account?
             <a href="{% url 'login' %}?type={{authType}}" class="green-text"
               >Sign in</a
             >
+          </p>
+          <p class="mt-0">
+            {% ifequal authType 'teacher' %} Are you a student?
+            <a href="{% url 'login' %}?type=student" class="green-text"
+              >Sign in as student</a
+            >
+            {% else %}Are you a teacher?
+            <a href="{% url 'login' %}?type=teacher" class="green-text"
+              >Sign in as teacher</a
+            >
+            {% endifequal %} 
+            
           </p>
         </section>
       </div>

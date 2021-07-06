@@ -80,11 +80,23 @@
               Submit
             </button>
           </form>
-          <p class="mt-3">
+          <p class="mt-3 mb-1">
             Don't have an account?
             <a href="{% url 'signup' %}?type={{authType}}" class="green-text"
               >Sign up</a
             >
+          </p>
+          <p class="mt-0">
+            {% ifequal authType 'teacher' %} Are you a student?
+            <a href="{% url 'login' %}?type=student" class="green-text"
+              >Sign in as student</a
+            >
+            {% else %}Are you a teacher?
+            <a href="{% url 'login' %}?type=teacher" class="green-text"
+              >Sign in as teacher</a
+            >
+            {% endifequal %} 
+            
           </p>
         </section>
       </div>
