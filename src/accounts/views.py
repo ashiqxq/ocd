@@ -38,40 +38,39 @@ def handleSignUp(request):
         err_body = {}
         if pass1 != pass2:
             err_body["password"] = "Passwords do not match!"
-        user = User.objects.filter(username=username).first()
-        # print(user, '*'*8)
-        if not user:
-            myUser = User.objects.create_user(
-                username=username,
-                first_name=firstname,
-                last_name=lastname,
-                email=email,
-                password=pass1,
-            )
-            myUser.save()
-            if authType == "teacher":
-                allUser = all_users(username=username, user_type=True)
-                allUser.save()
-                teacheruser = teacher_user(
-                    username=username, first_name=firstname, last_name=lastname, email=email
-                )
-                teacheruser.save()
-                login(request, myUser)
-                return redirect("teacher_dashboard")
-            elif authType == "student":
-                allUser = all_users(username=username, user_type=False)
-                allUser.save()
-                studentuser = student_user(
-                    username=username, first_name=firstname, last_name=lastname, email=email
-                )
-                studentuser.save()
-                login(request, myUser)
-                return redirect("student_dashboard")
-            # myUser.auth_type = authType
-            messages.success(request, "Your account has been successfully created")
-            return redirect("home")
         else:
-            err_body["username"] = "Account already exists with this username!"
+            user = User.objects.filter(username=username).first()
+            if not user:
+                myUser = User.objects.create_user(
+                    username=username,
+                    first_name=firstname,
+                    last_name=lastname,
+                    email=email,
+                    password=pass1,
+                )
+                myUser.save()
+                if authType == "teacher":
+                    allUser = all_users(username=username, user_type=True)
+                    allUser.save()
+                    teacheruser = teacher_user(
+                        username=username, first_name=firstname, last_name=lastname, email=email
+                    )
+                    teacheruser.save()
+                    login(request, myUser)
+                    return redirect("teacher_dashboard")
+                elif authType == "student":
+                    allUser = all_users(username=username, user_type=False)
+                    allUser.save()
+                    studentuser = student_user(
+                        username=username, first_name=firstname, last_name=lastname, email=email
+                    )
+                    studentuser.save()
+                    login(request, myUser)
+                    return redirect("student_dashboard")
+                messages.success(request, "Your account has been successfully created")
+                return redirect("home")
+            else:
+                err_body["username"] = "Account already exists with this username!"
         return render(request, "accounts/auth/register.html", {
             "err_body": err_body,
             "authType": authType
