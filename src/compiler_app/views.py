@@ -43,7 +43,8 @@ def runCode(request):
             "CSHARP": "cs",
             "GO": "go",
             "RUBY": "rb",
-            "KOTLIN": "kt"
+            "KOTLIN": "kt",
+            "LISP": "lisp",
         }
         run_cmd = {
             "CPP": "g++",
@@ -55,7 +56,8 @@ def runCode(request):
             "GO": "go",
             "RUBY": 'ruby',
             "PYTHON": "python3",
-            "KOTLIN": "kotlinc"
+            "KOTLIN": "kotlinc",
+            "LISP": "clisp"
         }
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
@@ -132,8 +134,27 @@ def runCode(request):
         elif lang == "PYTHON":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
-                    ["python3", f"{codefile}.{file_ext[lang]}"],
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
                     stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "LISP":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    # stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,

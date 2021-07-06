@@ -28,7 +28,7 @@ $(document).ready(function () {
   //   fun main() {
   //     println("Hello, World!")
   // }
-  language["LISP"] = '(display "Hello World!")\n';
+  language["LISP"] = '#!/usr/bin/clisp\n(princ "Hello World!")\n';
   language["OBJECTIVEC"] =
     '#import <Foundation/Foundation.h>\nint main(int argc, const char* argv[]){\n    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];\n    printf("Hello World");\n    [pool drain];\n    return 0;\n}\n';
   language["PASCAL"] =
