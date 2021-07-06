@@ -38,7 +38,7 @@ $(document).ready(function () {
   language["PHP"] = '<?php\n\necho "Hello World!";\n\n?>\n';
   language["PYTHON"] = "print('Hello World!')\n";
   language["RUBY"] = "print 'Hello World!'\n";
-  language["R"] = 'cat("Hello World")\n';
+  language["R"] = 'sampleVariable <- "Hello World"\nprint(sampleVariable)\n';
   language["RUST"] = 'fn main() {\n    println!("Hello World!");\n}\n';
   language["SCALA"] =
     'object HelloWorld {\n    def main(args: Array[String]) {\n        println("Hello, world!")\n    }\n}\n';

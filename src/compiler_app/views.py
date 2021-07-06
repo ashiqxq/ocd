@@ -45,7 +45,8 @@ def runCode(request):
             "RUBY": "rb",
             "KOTLIN": "kt",
             "LISP": "lisp",
-            "PERL": "pi"
+            "PERL": "pi",
+            "R": "R",
         }
         run_cmd = {
             "CPP": "g++",
@@ -59,7 +60,8 @@ def runCode(request):
             "PYTHON": "python3",
             "KOTLIN": "kotlinc",
             "LISP": "clisp",
-            "PERL": "perl"
+            "PERL": "perl",
+            "R": "Rscript",
         }
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
@@ -134,6 +136,25 @@ def runCode(request):
                 outpt.close()
             subprocess.run(["rm", "inputs.txt"])
         elif lang == "PYTHON":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "R":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
                     [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
