@@ -69,31 +69,52 @@
         class=""
         style="filter: drop-shadow(0 0.2rem 0.25rem rgba(0, 0, 0, 0.2))"
       >
-        <div id="topbar">
-          <div class="lang-choose">
+        <div id="topbar" class="row">
+          <div class="col-3">
             <select class="form-select" name="lang" id="lang">
               <option value="C">C</option>
               <option value="CPP">C++</option>
               {% comment %} <option value="CLOJURE">Clojure (clojure 1.1.0)</option> {% endcomment %}
               {% comment %} <option value="CSS">CSS</option> {% endcomment %}
               <option value="CSHARP">C#</option>
-              {% comment %} <option value="GO">Go (go 1.4.2)</option> {% endcomment %}
+              {% comment %} <option value="GO">Go</option> {% endcomment %}
               {% comment %} <option value="HASKELL">Haskell (ghc 7.4.1)</option> {% endcomment %}
               <option value="JAVA">Java</option>
               <option value="JAVASCRIPT">JavaScript</option>
-              {% comment %} <option value="LISP">Lisp (csc 4.8.0.5)</option> {% endcomment %}
+              <option value="KOTLIN">Kotlin</option>
+              <option value="LISP">Lisp</option>
               {% comment %} <option value="OBJECTIVEC">Objective-C (clang 3.3)</option> {% endcomment %}
               {% comment %} <option value="PASCAL">Pascal (fpc 2.6.2)</option> {% endcomment %}
-              {% comment %} <option value="PERL">Perl (perl 5.18.2)</option> {% endcomment %}
-              {% comment %} <option value="PHP">PHP (php 5.5.9)</option> {% endcomment %}
+              <option value="PERL">Perl</option>
+              <option value="PHP">PHP</option>
               <option value="PYTHON" selected>Python3</option>
-              {% comment %} <option value="RUBY">Ruby (ruby 2.1.1)</option> {% endcomment %}
-              {% comment %} <option value="R">R (RScript 3.0.2)</option> {% endcomment %}
+              <option value="RUBY">Ruby</option>
+              <option value="R">R</option>
               {% comment %} <option value="RUST">Rust (rustc 1.4.0)</option> {% endcomment %}
               {% comment %} <option value="SCALA">Scala (scalac 2.9.2)</option> {% endcomment %}
               <option value="TEXTFILE">Text</option>
             </select>
           </div>
+          <div class="col-2 align-items-center d-flex ms-auto">
+          <a href="#" id="download">
+              download code
+              <span
+                class="glyphicon glyphicon-download-alt"
+                aria-hidden="true"
+              ></span>
+            </a>
+          </div>
+          <div class="col-3">
+            <div class="theme-choose">
+              <select class="form-select" name="theme" id="theme">
+                <option value="Light" selected>Light</option>
+                <option value="Monokai">Monokai</option>
+                <option value="Solarised Light">Solarised Light</option>
+                <option value="Twilight">Twilight</option>
+              </select>
+            </div>
+          </div>
+            
         </div>
 
         <pre id="editor"></pre>
@@ -251,7 +272,7 @@
               <input type="text" class="form-control" id="comment_body">
             </div>
             <button id="comment_btn" class="btn col-1 p-0">
-              <i class="fa fa-comment" aria-hidden="true"></i>
+              <i class="fa fa-paper-plane" aria-hidden="true"></i>
             </button>
           </div>
           {% for comment in comments %}

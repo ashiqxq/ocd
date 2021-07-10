@@ -37,20 +37,35 @@ def runCode(request):
             "CPP": "cpp",
             "C": "c",
             "PYTHON": "py",
+            "PHP": "php",
             "JAVA": "java",
             "JAVASCRIPT": "js",
             "CSHARP": "cs",
+            "GO": "go",
+            "RUBY": "rb",
+            "KOTLIN": "kt",
+            "LISP": "lisp",
+            "PERL": "pi",
+            "R": "R",
         }
         run_cmd = {
             "CPP": "g++",
             "C": "gcc",
+            "PHP": "php",
             "JAVA": "javac",
             "JAVASCRIPT": "node",
             "CSHARP": "mcs",
+            "GO": "go",
+            "RUBY": 'ruby',
+            "PYTHON": "python3",
+            "KOTLIN": "kotlinc",
+            "LISP": "clisp",
+            "PERL": "perl",
+            "R": "Rscript",
         }
         shutil.copyfile("codes.txt", f"{codefile}.{file_ext[lang]}")
         open("codes.txt", "w").close()
-        # subprocess.run(["sudo", "rm", "codes.txt"])
+        subprocess.run(["rm", "codes.txt"])
         if lang == "C" or lang == "CPP":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
@@ -123,13 +138,13 @@ def runCode(request):
         elif lang == "PYTHON":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
-                    ["python", f"{codefile}.{file_ext[lang]}"],
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
                     stdin=inpt,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                     text=True,
                 )
-                # subprocess.run(["sudo", "rm", f"{codefile}.{file_ext[lang]}"])
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
                 inpt.close()
                 output = proc.stdout
                 error = proc.stderr
@@ -138,7 +153,102 @@ def runCode(request):
                 else:
                     outpt.write(error)
                 outpt.close()
-            # subprocess.run(["sudo", "rm", "inputs.txt"])
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "R":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "LISP":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    # stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "PERL":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    # stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "RUBY":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "PHP":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [run_cmd[lang], f"{codefile}.{file_ext[lang]}"],
+                    stdin=inpt,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                inpt.close()
+                output = proc.stdout
+                error = proc.stderr
+                if error == "":
+                    outpt.write(output)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
         elif lang == "JAVASCRIPT":
             with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
                 proc = subprocess.run(
@@ -164,8 +274,6 @@ def runCode(request):
                     [
                         run_cmd[lang],
                         f"{codefile}.{file_ext[lang]}",
-                        # "-o",
-                        # f"{codefile}",
                     ],
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
@@ -193,11 +301,88 @@ def runCode(request):
                     outpt.write(error)
                 outpt.close()
             subprocess.run(["rm", "inputs.txt"])
+        elif lang == "KOTLIN":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        f"{codefile}.{file_ext[lang]}",
+                        "-include-runtime",
+                        "-d",
+                        f"{codefile}.jar"
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                error = proc.stderr
+                if error == "":
+                    proc = subprocess.run(
+                        ["java", "-jar", f"{codefile}.jar"],
+                        stdin=inpt,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    inpt.close()
+                    subprocess.run(["rm", f"{codefile}.jar"])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == "":
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+        elif lang == "GO":
+            with open("inputs.txt", "r") as inpt, open("outputs.txt", "w") as outpt:
+                subprocess.run(["echo", "$GOPATH"])
+                proc = subprocess.run(
+                    [
+                        run_cmd[lang],
+                        "build",
+                        "-o",
+                        f"{codefile}",
+                        f"{codefile}.{file_ext[lang]}",
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                # print(proc.stderr, proc.stdout)
+                subprocess.run(["rm", f"{codefile}.{file_ext[lang]}"])
+                error = proc.stderr
+                if error == "":
+                    proc = subprocess.run(
+                        [f"./{codefile}"],
+                        stdin=inpt,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True,
+                    )
+                    inpt.close()
+                    subprocess.run(["rm", f"{codefile}"])
+                    output = proc.stdout
+                    error = proc.stderr
+                    if error == "":
+                        outpt.write(output)
+                    else:
+                        outpt.write(error)
+                else:
+                    outpt.write(error)
+                outpt.close()
+            subprocess.run(["rm", "inputs.txt"])
+            # subprocess.run(["mkdir", "temp"])
+            # subprocess.run(["mv", f"{codefile}.{file_ext[lang]}", "temp/"])
+
         with open("outputs.txt", "r") as f:
             output = f.read()
             otp_html = "<pre>" + output + "</pre>"
             f.close()
-        # subprocess.run(["sudo", "rm", "outputs.txt"])
+        subprocess.run(["rm", "outputs.txt"])
         res = {
             "run_status": {
                 "memory_used": "2744",

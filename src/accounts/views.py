@@ -35,35 +35,46 @@ def handleSignUp(request):
         email = request.POST["email"]
         pass1 = request.POST["pass1"]
         pass2 = request.POST["pass2"]
-        myUser = User.objects.create_user(
-            username=username,
-            first_name=firstname,
-            last_name=lastname,
-            email=email,
-            password=pass1,
-        )
-        myUser.save()
-        if authType == "teacher":
-            allUser = all_users(username=username, user_type=True)
-            allUser.save()
-            teacheruser = teacher_user(
-                username=username, first_name=firstname, last_name=lastname, email=email
-            )
-            teacheruser.save()
-            login(request, myUser)
-            return redirect("teacher_dashboard")
-        elif authType == "student":
-            allUser = all_users(username=username, user_type=False)
-            allUser.save()
-            studentuser = student_user(
-                username=username, first_name=firstname, last_name=lastname, email=email
-            )
-            studentuser.save()
-            login(request, myUser)
-            return redirect("student_dashboard")
-        # myUser.auth_type = authType
-        messages.success(request, "Your account has been successfully created")
-        return redirect("home")
+        err_body = {}
+        if pass1 != pass2:
+            err_body["password"] = "Passwords do not match!"
+        else:
+            user = User.objects.filter(username=username).first()
+            if not user:
+                myUser = User.objects.create_user(
+                    username=username,
+                    first_name=firstname,
+                    last_name=lastname,
+                    email=email,
+                    password=pass1,
+                )
+                myUser.save()
+                if authType == "teacher":
+                    allUser = all_users(username=username, user_type=True)
+                    allUser.save()
+                    teacheruser = teacher_user(
+                        username=username, first_name=firstname, last_name=lastname, email=email
+                    )
+                    teacheruser.save()
+                    login(request, myUser)
+                    return redirect("teacher_dashboard")
+                elif authType == "student":
+                    allUser = all_users(username=username, user_type=False)
+                    allUser.save()
+                    studentuser = student_user(
+                        username=username, first_name=firstname, last_name=lastname, email=email
+                    )
+                    studentuser.save()
+                    login(request, myUser)
+                    return redirect("student_dashboard")
+                messages.success(request, "Your account has been successfully created")
+                return redirect("home")
+            else:
+                err_body["username"] = "Account already exists with this username!"
+        return render(request, "accounts/auth/register.html", {
+            "err_body": err_body,
+            "authType": authType
+        })
     else:
         return render(request, "accounts/auth/register.html", {"authType": authType})
 
@@ -126,19 +137,26 @@ def handle_fake(request):
 
 def handleLogin(request):
     authType = request.GET.get("type")
+    user_type = authType == "teacher"
     if request.method == "POST":
         name = request.POST["name"]
         password = request.POST["pass"]
+        err_body = {}
         user = authenticate(username=name, password=password)
         if user is not None:
-            login(request, user)
-            messages.success(request, "Successfully logged in")
-            if authType == "teacher":
-                return redirect("teacher_dashboard")
-            elif authType == "student":
-                return redirect("student_dashboard")
+            mUser = all_users.objects.get(username=name)
+            if user_type == mUser.user_type:
+                login(request, user)
+                if authType == "teacher":
+                    return redirect("teacher_dashboard")
+                elif authType == "student":
+                    return redirect("student_dashboard")
+            else:
+                err_body["credentials"] = "Invalid credentials. Please check your username or password!"
+                return render(request, "accounts/auth/login.html", {"authType": authType, "err_body": err_body})
         else:
-            messages.error(request, "Invalid credentials")
+            err_body["credentials"] = "Invalid credentials. Please check your username or password!"
+            return render(request, "accounts/auth/login.html", {"authType": authType, "err_body": err_body})
         return redirect("home")
     else:
         return render(request, "accounts/auth/login.html", {"authType": authType})

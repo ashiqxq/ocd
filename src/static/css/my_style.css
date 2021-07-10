@@ -30,22 +30,11 @@ hr {
 	vertical-align: middle;
 	width: 160px;
 }
-.theme-choose {
-	margin: 0;
-	position: relative;
-	display: inline-block;
-	vertical-align: middle;
-	float:right; 
-	width: 160px;
-}
-#settings{
-	display:inline;
-}
 
-#download{
+/* #download{
 	margin-left: 50%;
 	display: inline;
-}
+} */
 
 #editor {
 	margin: 0;

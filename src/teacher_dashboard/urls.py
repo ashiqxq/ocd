@@ -15,7 +15,7 @@ urlpatterns = [
     ),
     path("courses/<str:course_id>", views.createAssignment, name="createAssignment"),
     path(
-        "courses/<str:course_id>/edit/<slug:assignment_slug>",
+        "courses/<str:course_id>/edit/<slug:assignment_slug>/",
         views.createAssignment,
         name="editAssignment",
     ),

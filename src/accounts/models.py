@@ -52,7 +52,7 @@ class student_assignments(models.Model):
     slug = models.SlugField(null=True, unique=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.assignment_name)
+        self.slug = slugify(self.assignment_name+'_'+self.course_id.course_id)
         super(student_assignments, self).save(*args, **kwargs)
 
 

@@ -21,17 +21,24 @@ $(document).ready(function () {
     'class TestClass {\n    public static void main(String args[] ) throws Exception {\n        System.out.println("Hello World!");\n    }\n}\n';
   language["JAVASCRIPT"] =
     "console.log('Hello World!\\n');\n";
-  language["LISP"] = '(display "Hello World!")\n';
+  language["KOTLIN"] =
+    'fun main() {\n  println("Hello, World!")\n}';
+
+
+  //   fun main() {
+  //     println("Hello, World!")
+  // }
+  language["LISP"] = '#!/usr/bin/clisp\n(princ "Hello World!")\n';
   language["OBJECTIVEC"] =
     '#import <Foundation/Foundation.h>\nint main(int argc, const char* argv[]){\n    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];\n    printf("Hello World");\n    [pool drain];\n    return 0;\n}\n';
   language["PASCAL"] =
     "program Hello;\nbegin\n    writeln ('Hello World!')\nend.\n";
   language["PERL"] =
-    "use strict;\n=comment\n# Read input from stdin and provide input before running code\n# Echo input to output.\nwhile(my $fred = <STDIN>) {\n    print $fred;\n}\n=cut\nprint 'Hello World!'\n";
+    "#!/usr/bin/perl\n\nuse strict;\n=comment\n# Read input from stdin and provide input before running code\n# Echo input to output.\nwhile(my $fred = <STDIN>) {\n    print $fred;\n}\n=cut\nprint 'Hello World!'\n";
   language["PHP"] = '<?php\n\necho "Hello World!";\n\n?>\n';
   language["PYTHON"] = "print('Hello World!')\n";
   language["RUBY"] = "print 'Hello World!'\n";
-  language["R"] = 'cat("Hello World")\n';
+  language["R"] = 'sampleVariable <- "Hello World"\nprint(sampleVariable)\n';
   language["RUST"] = 'fn main() {\n    println!("Hello World!");\n}\n';
   language["SCALA"] =
     'object HelloWorld {\n    def main(args: Array[String]) {\n        println("Hello, world!")\n    }\n}\n';

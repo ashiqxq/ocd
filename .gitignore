@@ -64,3 +64,4 @@ src/src/.env
 
 static/
 src/act_env.cmd
+go/*

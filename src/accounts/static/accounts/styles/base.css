@@ -49,35 +49,11 @@ nav{
 }
 
 .landing-section {
-    /* position: absolute; */
-    /* width: 100%; */
-    /* top: -70px; */
     height: calc(100vh - 60px);
     display: flex;
     justify-content: center;
     align-items: center;
-    /* position: relative; */
 }
-
-/* .hero-text-wrapper {
-    position: absolute;
-    top: 22%;
-    width:40%;
-} */
-
-/* .hero-img-wrapper {
-    position: absolute;
-    right: 9%;
-    top: 12%;
-} */
-
-.hero-text-wrapper {
-    
-}
-
-/* .hero-img-wrapper img {
-    max-height: 420px;
-} */
 
 /* buttons */
 .green-btn {
@@ -141,4 +117,9 @@ nav{
 
 .green-text {
     color: #00C898;
+}
+
+
+.text-red {
+    color: red !important;
 }
